@@ -58,6 +58,7 @@ public class FragApproveList extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
         onClickListener();
+        String a;
 //        setData();
         return mBinding.getRoot();
     }
