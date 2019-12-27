@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/shape_round_white"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/ivNewsImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_news_demo" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:padding="5dp"
+                    android:text="Status"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tvDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:fontFamily="@font/font_regular"
+                    android:padding="5dp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:text="Lin k this is a test description line in this senario in android and how to explain it i dont know in android and how to explain it i dont know"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivMenubar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:padding="9dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_menubar"
+                android:tint="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/llMain"
+            android:layout_alignBottom="@+id/llMain"
+            android:background="@drawable/shape_round_grey_transparent"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+    </RelativeLayout>
+</layout>

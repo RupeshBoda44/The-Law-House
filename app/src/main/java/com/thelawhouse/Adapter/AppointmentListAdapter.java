@@ -32,7 +32,10 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mClickListener = mClickListeneR;
         mClickListener2 = mClickListeneR2;
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AdapterAppointmentListBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.adapter_appointment_list, parent, false);

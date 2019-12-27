@@ -105,7 +105,7 @@ public class RegistrationAdminActivity extends AppCompatActivity {
     private Map<String, String> paramRegister() {
         Map<String, String> params = new HashMap<>();
         params.put("name", mBinding.edtName.getText().toString());
-        params.put("mobile_number", "+91" + mBinding.edtMobile.getText().toString());
+        params.put("mobile_number", mBinding.edtMobile.getText().toString());
         params.put("email", mBinding.edtEmail.getText().toString());
         params.put("password", mBinding.edtPassword.getText().toString());
         return params;

@@ -34,7 +34,10 @@ public class AllUsefullLinkAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         caseList_data = new ArrayList<>();
         mClickListener = mClickListeneR;
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AdapterAllUsefullLinkBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.adapter_all_usefull_link, parent, false);

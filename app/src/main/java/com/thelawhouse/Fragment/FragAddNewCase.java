@@ -180,8 +180,6 @@ public class FragAddNewCase extends Fragment implements View.OnClickListener {
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if (mBinding.tvLastDate.getText().toString().equalsIgnoreCase("")) {
                     Utils.showDialog(getActivity(), "Please Enter Last Date");
-                } else if (mBinding.tvNextDate.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Next Date");
                 } else if (mBinding.edtCaseNo.getText().toString().equalsIgnoreCase("")) {
                     Utils.showDialog(getActivity(), "Please Enter Case Type / No");
                 } else if (mBinding.edtCourtNo.getText().toString().equalsIgnoreCase("")) {
@@ -235,8 +233,6 @@ public class FragAddNewCase extends Fragment implements View.OnClickListener {
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if (mBinding.tvLastDate.getText().toString().equalsIgnoreCase("")) {
                     Utils.showDialog(getActivity(), "Please Enter Last Date");
-                } else if (mBinding.tvNextDate.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Next Date");
                 } else if (mBinding.edtCaseNo.getText().toString().equalsIgnoreCase("")) {
                     Utils.showDialog(getActivity(), "Please Enter Case Type / No");
                 } else if (mBinding.edtCourtNo.getText().toString().equalsIgnoreCase("")) {

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.thelawhouse.Activity.ForgotPWDActivity;
 import com.thelawhouse.Activity.MainActivity;
+import com.thelawhouse.Activity.RegistrationAdminActivity;
 import com.thelawhouse.Model.LoginModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.Constants;
@@ -68,6 +69,13 @@ public class EmployeeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        mBinding.tvRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RegistrationAdminActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void login() {
@@ -93,19 +101,27 @@ public class EmployeeFragment extends Fragment {
                     if (response.code() == 200) {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
-                        PreferenceHelper.putBoolean(Constants.IS_LOGIN, true);
-                        PreferenceHelper.putString(Constants.USER_ID, response.body().user.user_id);
-                        PreferenceHelper.putString(Constants.NAME, response.body().user.name);
-                        PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().user.mobile_number);
-                        PreferenceHelper.putString(Constants.EMAIL, response.body().user.email);
-                        PreferenceHelper.putString(Constants.PASSWORD, response.body().user.password);
-                        PreferenceHelper.putString(Constants.ORIGANAL_PASSWORD, response.body().user.origanal_password);
-                        PreferenceHelper.putString(Constants.CREATED_DATE, response.body().user.created_date);
-                        PreferenceHelper.putString(Constants.OTP, response.body().user.otp);
-                        PreferenceHelper.putString(Constants.LOGINTYPE, "employee");
-                        PreferenceHelper.putString(Constants.ADMIN_ACCESS, response.body().admin_access);
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
+                        if (response.body().message.equalsIgnoreCase("success")) {
+                            if (response.body().user.status.equalsIgnoreCase("active")) {
+                                PreferenceHelper.putBoolean(Constants.IS_LOGIN, true);
+                                PreferenceHelper.putString(Constants.USER_ID, response.body().user.user_id);
+                                PreferenceHelper.putString(Constants.NAME, response.body().user.name);
+                                PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().user.mobile_number);
+                                PreferenceHelper.putString(Constants.EMAIL, response.body().user.email);
+                                PreferenceHelper.putString(Constants.PASSWORD, response.body().user.password);
+                                PreferenceHelper.putString(Constants.ORIGANAL_PASSWORD, response.body().user.origanal_password);
+                                PreferenceHelper.putString(Constants.CREATED_DATE, response.body().user.created_date);
+                                PreferenceHelper.putString(Constants.OTP, response.body().user.otp);
+                                PreferenceHelper.putString(Constants.LOGINTYPE, "employee");
+                                PreferenceHelper.putString(Constants.ADMIN_ACCESS, response.body().admin_access);
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Utils.showDialog(getActivity(), "Your account is not activated yet.Please wait for confirmation.");
+                            }
+                        } else {
+                            Utils.showDialog(getActivity(), response.body().message + "");
+                        }
                     } else {
                         Utils.showDialog(getActivity(), response.body().message + "");
                     }

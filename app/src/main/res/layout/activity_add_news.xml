@@ -1,37 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@drawable/app_bg"
+        android:orientation="vertical"
+        tools:context=".Activity.AddNewsActivity">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivNewsImg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:id="@+id/llPickImg"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_shape">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_plus"
+                    android:tint="@color/colorPrimary" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/llTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/shape_round_white"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                android:background="@drawable/shape_round_color_primary">
+                android:background="@drawable/shape_round_color_primary"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:adjustViewBounds="true"
                     android:padding="7dp"
-                    android:src="@drawable/ic_mobile"
+                    android:src="@drawable/ic_link"
                     android:tint="@color/white" />
             </LinearLayout>
 
             <EditText
-                android:id="@+id/edtMobile"
+                android:id="@+id/edtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start|center"
@@ -39,39 +77,45 @@
                 android:layout_marginEnd="7dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/font_regular"
-                android:hint="@string/enter_your_mobile_number"
-                android:inputType="number"
-                android:maxLength="10"
+                android:gravity="top"
+                android:hint="@string/enter_title"
+                android:inputType="text"
+                android:padding="7dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size" />
+
+
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llMobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/shape_round_white"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                android:background="@drawable/shape_round_color_primary">
+                android:background="@drawable/shape_round_color_primary"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:adjustViewBounds="true"
                     android:padding="7dp"
-                    android:src="@drawable/ic_login_password"
+                    android:src="@drawable/ic_link"
                     android:tint="@color/white" />
             </LinearLayout>
 
             <EditText
-                android:id="@+id/edtPassword"
+                android:id="@+id/edtNewsDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="start|center"
@@ -79,56 +123,46 @@
                 android:layout_marginEnd="7dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/font_regular"
-                android:hint="@string/enter_your_password"
-                android:inputType="textPassword"
+                android:gravity="top"
+                android:hint="@string/enter_news_description"
+                android:inputType="textMultiLine"
+                android:lines="9"
+                android:maxLines="10"
+                android:minLines="8"
+                android:padding="5dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="70dp"
-            android:background="@drawable/shape_round_color_primary_border"
-            android:gravity="center"
-            android:padding="7dp"
-            android:text="@string/login"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="15dp"
-            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvForgotPwd"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvSubmit"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/shape_round_color_primary_border"
             android:fontFamily="@font/font_regular"
-            android:padding="5dp"
-            android:text="@string/forgot_password"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="70dp"
-            android:background="@drawable/shape_round_color_primary_border"
             android:gravity="center"
             android:padding="7dp"
-            android:text="@string/register"
-            android:textAllCaps="true"
+            android:text="Submit"
             android:textColor="@color/white"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tvUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/shape_round_color_primary_border"
+            android:fontFamily="@font/font_regular"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="Update"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
     </LinearLayout>
 </layout>

@@ -79,7 +79,10 @@ public class AllCaseAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         });
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public int getItemCount() {
         return caseList_data.size();

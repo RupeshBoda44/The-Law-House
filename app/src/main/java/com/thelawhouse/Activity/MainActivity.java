@@ -25,11 +25,14 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.navigation.NavigationView;
 import com.thelawhouse.Fragment.FragAddAppointment;
 import com.thelawhouse.Fragment.FragAddNewCase;
+import com.thelawhouse.Fragment.FragApproveList;
 import com.thelawhouse.Fragment.FragCaseCalenderList;
 import com.thelawhouse.Fragment.FragCompletedCases;
 import com.thelawhouse.Fragment.FragFindCaseByMobile;
+import com.thelawhouse.Fragment.FragNewsList;
 import com.thelawhouse.Fragment.FragPhoneBookList;
 import com.thelawhouse.Fragment.FragSegmentLawList;
+import com.thelawhouse.Fragment.FragUnupdatedCases;
 import com.thelawhouse.Fragment.FragUsefullLinkList;
 import com.thelawhouse.Fragment.MyAppointmentsFragment;
 import com.thelawhouse.Model.BroadcastMessageModel;
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mBinding = DataBindingUtil.setContentView(mContext, R.layout.activity_main);
         String login_access = PreferenceHelper.getString(Constants.ADMIN_ACCESS, "");
-        String[] separated = login_access.split(",");
+        String[] separated = login_access.split(",", 2);
         String user_a = separated[0].trim();
         String user_b = separated[1].trim();
         if (PreferenceHelper.getString(Constants.USER_ID, "").equalsIgnoreCase(user_a) ||
@@ -126,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBinding.drawer.tvAboutUs.setOnClickListener(mContext);
         mBinding.drawer.tvCaseCalender.setOnClickListener(mContext);
         mBinding.drawer.tvCompletedCases.setOnClickListener(mContext);
+        mBinding.drawer.tvUnUpdatedCases.setOnClickListener(mContext);
+        mBinding.drawer.tvNews.setOnClickListener(mContext);
+        mBinding.drawer.tvApproveList.setOnClickListener(mContext);
         ScrollViewText scrollViewText = (ScrollViewText) findViewById(R.id.tvBottom);
         scrollViewText.startScroll();
         scrollViewText.setOnTouchListener(new View.OnTouchListener() {
@@ -285,6 +291,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Fragment fragment3 = new FragCompletedCases();
                 fragmentManager3.beginTransaction().replace(R.id.contain_layout, fragment3).addToBackStack(null).commit();
                 break;
+            case R.id.tvUnUpdatedCases:
+                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.unupdated_cases));
+                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+                FragmentManager fragmentManager10 = getSupportFragmentManager();
+                Fragment fragment10 = new FragUnupdatedCases();
+                fragmentManager10.beginTransaction().replace(R.id.contain_layout, fragment10).addToBackStack(null).commit();
+                break;
+            case R.id.tvNews:
+                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.news));
+                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+                FragmentManager fragmentManager11 = getSupportFragmentManager();
+                Fragment fragment11 = new FragNewsList();
+                fragmentManager11.beginTransaction().replace(R.id.contain_layout, fragment11).addToBackStack(null).commit();
+                break;
             case R.id.tvLogout:
                 logoutDialog();
                 break;
@@ -330,9 +350,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Fragment fragment8 = new FragSegmentLawList();
                 fragmentManager8.beginTransaction().replace(R.id.contain_layout, fragment8).addToBackStack(null).commit();
                 break;
-            case R.id.tvFindCaseByDate:
-//                selectFirstItemAsDefault();
-
+            case R.id.tvApproveList:
+                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.approve_list));
+                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+                FragmentManager fragmentManager9 = getSupportFragmentManager();
+                Fragment fragment9 = new FragApproveList();
+                fragmentManager9.beginTransaction().replace(R.id.contain_layout, fragment9).addToBackStack(null).commit();
                 break;
             case R.id.tvReminder:
                /* Intent intent = new Intent(mContext, CustomCalenderActivity.class);

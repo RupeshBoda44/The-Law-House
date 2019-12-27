@@ -57,7 +57,11 @@ public class VerifyOtpActivity extends AppCompatActivity {
         mBinding.tvResendOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resendOtp();
+                if (type.equalsIgnoreCase("register")) {
+                    resendOtpAdmin();
+                } else {
+                    resendOtp();
+                }
             }
         });
         mBinding.tvSubmit.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +72,8 @@ public class VerifyOtpActivity extends AppCompatActivity {
                 } else {
                     if (getIntent().getExtras().getString("class").equalsIgnoreCase("ForgotPwd"))
                         submitForgotOTP();
+                    else if (type.equalsIgnoreCase("register"))
+                        submitOTPAdmin();
                     else
                         submitOTP();
                 }
@@ -145,6 +151,45 @@ public class VerifyOtpActivity extends AppCompatActivity {
         }
     }
 
+    private void submitOTPAdmin() {
+        if (isInternetAvailable(mContext)) {
+            mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
+            WebApiClient.getInstance().VerifyOTPAdmin(paramSubmitOTPAdmin()).enqueue(new Callback<VerifyOTPModel>() {
+                @Override
+                public void onResponse(Call<VerifyOTPModel> call, Response<VerifyOTPModel> response) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("Response :", response.message() + "");
+                    if (response.code() == 200) {
+                        Log.e("response", response.body() + "");
+                        if (response.body().status == true) {
+                            Intent intent = new Intent(mContext, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Utils.showDialog(mContext, response.body().message + "");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<VerifyOTPModel> call, Throwable t) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("error", t.getMessage());
+                }
+            });
+        } else {
+            Utils.showDialog(mContext, "Check Your Internet.");
+        }
+    }
+
+    private Map<String, String> paramSubmitOTPAdmin() {
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
+        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        params.put("otp", mBinding.edtOTP.getText().toString());
+        return params;
+    }
+
     private void resendOtp() {
         if (isInternetAvailable(mContext)) {
             mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
@@ -177,6 +222,41 @@ public class VerifyOtpActivity extends AppCompatActivity {
     private Map<String, String> paramResendOTP() {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
+        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        return params;
+    }
+
+    private void resendOtpAdmin() {
+        if (isInternetAvailable(mContext)) {
+            mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
+            WebApiClient.getInstance().ResendOtpAdmin(paramResendOTPAdmin()).enqueue(new Callback<VerifyOTPModel>() {
+                @Override
+                public void onResponse(Call<VerifyOTPModel> call, Response<VerifyOTPModel> response) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("Response :", response.message() + "");
+                    if (response.code() == 200) {
+                        Log.e("response", response.body() + "");
+                        if (response.body().status == true) {
+                            Utils.showDialog(mContext, "Otp is Successfully Sent");
+                        } else {
+                            Utils.showDialog(mContext, response.body().message + "");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<VerifyOTPModel> call, Throwable t) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("error", t.getMessage());
+                }
+            });
+        } else {
+            Utils.showDialog(mContext, "Check Your Internet.");
+        }
+    }
+
+    private Map<String, String> paramResendOTPAdmin() {
+        Map<String, String> params = new HashMap<>();
         params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
         return params;
     }

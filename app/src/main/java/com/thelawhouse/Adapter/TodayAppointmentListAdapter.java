@@ -34,6 +34,11 @@ public class TodayAppointmentListAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AdapterTodayAppointmentListBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.adapter_today_appointment_list, parent, false);
         return new TodayAppointmentListAdapter.ItemViewHolder(mBinding.getRoot(), mBinding);

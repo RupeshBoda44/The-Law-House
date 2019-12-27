@@ -2,17 +2,19 @@ package com.thelawhouse.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LoginModel {
+import java.util.List;
+
+public class AdminListModel {
     @SerializedName("status")
     public boolean status;
     @SerializedName("message")
     public String message;
-    @SerializedName("admin_access")
-    public String admin_access;
-    @SerializedName("user_data")
-    public User user;
+    @SerializedName("total_pages")
+    public String total_pages;
+    @SerializedName("users_data")
+    public List<Users_data> users_data;
 
-    public static class User {
+    public static class Users_data {
         @SerializedName("created_date")
         public String created_date;
         @SerializedName("status")

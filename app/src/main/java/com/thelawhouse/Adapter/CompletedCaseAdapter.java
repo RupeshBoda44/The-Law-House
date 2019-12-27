@@ -39,10 +39,20 @@ public class CompletedCaseAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final CompletedCaseAdapter.ItemViewHolder mViewHolder = (CompletedCaseAdapter.ItemViewHolder) holder;
         final CaseListModel.Collection_data mdata = caseList_data.get(position);
-        mViewHolder.mBinding.tvNextDate.setText(mdata.case_next_date + " / " + mdata.case_last_date);
+        if (mdata.case_next_date.equalsIgnoreCase("")) {
+            mViewHolder.mBinding.tvDate.setText("Last Date");
+            mViewHolder.mBinding.tvNextDate.setText(mdata.case_last_date);
+        } else {
+            mViewHolder.mBinding.tvNextDate.setText(mdata.case_last_date + " / " + mdata.case_next_date);
+        }
         mViewHolder.mBinding.tvLastDate.setText(mdata.case_last_date);
         mViewHolder.mBinding.tvCaseType.setText(mdata.case_type + " / " + mdata.court + " - " + mdata.court_room_no);
         mViewHolder.mBinding.tvCourtNo.setText(mdata.court_room_no);

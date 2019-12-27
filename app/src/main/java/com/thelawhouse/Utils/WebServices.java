@@ -1,8 +1,10 @@
 package com.thelawhouse.Utils;
 
 import com.thelawhouse.Model.AddAppointmentModel;
+import com.thelawhouse.Model.AddNewsModel;
 import com.thelawhouse.Model.AddSegementLawModel;
 import com.thelawhouse.Model.AddUsefullLinkModel;
+import com.thelawhouse.Model.AdminListModel;
 import com.thelawhouse.Model.AppointmentListModel;
 import com.thelawhouse.Model.BroadcastMessageModel;
 import com.thelawhouse.Model.CaseListModel;
@@ -11,6 +13,7 @@ import com.thelawhouse.Model.DateCountModel;
 import com.thelawhouse.Model.LoginModel;
 import com.thelawhouse.Model.NewCaseModel;
 import com.thelawhouse.Model.NewMemberModel;
+import com.thelawhouse.Model.NewsListModel;
 import com.thelawhouse.Model.PhonebookModel;
 import com.thelawhouse.Model.RegisterModel;
 import com.thelawhouse.Model.SegmentLawListModel;
@@ -21,10 +24,14 @@ import com.thelawhouse.Model.VerifyOTPModel;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface WebServices {
 
@@ -144,8 +151,30 @@ public interface WebServices {
     Call<CaseListModel> CompletedCases(@FieldMap Map<String, String> Map);
 
     @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_all_unupdated_case_list")
+    Call<CaseListModel> UnUpdatedCases(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
     @POST("the_law_house_apis.php?action=change_case_status")
     Call<VerifyModel> ChangeCaseStatus(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_all_employee_list")
+    Call<AdminListModel> AdminList(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=update_employee_status")
+    Call<VerifyModel> ChangeUserStatus(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=add_news")
+    Call<AddNewsModel> AddNewsWithoutImg(@FieldMap Map<String, String> Map);
+
+    @Multipart
+    @POST("the_law_house_apis.php?action=add_news")
+    Call<AddNewsModel> AddNewsWithImg(@Query("title") String title,
+                                      @Query("content") String content,
+                                      @Part MultipartBody.Part file);
 
 
     @FormUrlEncoded
@@ -153,8 +182,16 @@ public interface WebServices {
     Call<VerifyOTPModel> VerifyOTP(@FieldMap Map<String, String> Map);
 
     @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=employee_verify_otp_login")
+    Call<VerifyOTPModel> VerifyOTPAdmin(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
     @POST("the_law_house_apis.php?action=resend_otp")
     Call<VerifyOTPModel> ResendOtp(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=employee_send_otp_login")
+    Call<VerifyOTPModel> ResendOtpAdmin(@FieldMap Map<String, String> Map);
 
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=get_all_case_list")
@@ -171,6 +208,14 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=update_case")
     Call<NewCaseModel> UpdateCase(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=delete_news")
+    Call<VerifyModel> DeleteNews(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_all_news")
+    Call<NewsListModel> NewsList(@FieldMap Map<String, String> Map);
 
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=get_date_case_list")

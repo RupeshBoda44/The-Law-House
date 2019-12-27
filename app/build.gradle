@@ -67,4 +67,6 @@ dependencies {
     implementation project(':library')
 
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    // Image Cropping
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 }

@@ -81,9 +81,20 @@
     <string name="approve_list">Approve List</string>
     <string name="broadcast">Broadcast</string>
     <string name="news">News</string>
+    <string name="enter_news_description">Enter News Description</string>
     <string-array name="spLinkArray">
         <item>Enter your status</item>
         <item>show</item>
         <item>hide</item>
     </string-array>
+    <string name="take_new_photo">Take a new photo</string>
+
+    <!--Camera Action-->
+    <string name="select_from_photo">Select from gallery</string>
+    <string name="add_photo">Add Photo</string>
+    <string name="permission_camera">Allow Permission Click to use your phone\'s camera? \nTo enable this, click Ok below and activate Storage under the Permissions menu.</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="unupdated_cases">Unupdated Cases</string>
 </resources>

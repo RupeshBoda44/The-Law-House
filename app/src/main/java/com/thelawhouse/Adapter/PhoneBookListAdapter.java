@@ -28,7 +28,10 @@ public class PhoneBookListAdapter extends RecyclerView.Adapter<RecyclerView.View
         caseList_data = new ArrayList<>();
         this.clickListener = clickListener;
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AdapterPhonebookListBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.adapter_phonebook_list, parent, false);
