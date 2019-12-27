@@ -1,0 +1,2 @@
+include ':app', ':alerter', ':countrycodepicker', ':calendarview', ':library'
+rootProject.name = 'The Law House'

@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_round_white"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/last_date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvLastDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="Case Type / Court"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvCaseType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/stages"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvStages"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="Next / Last Date"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvNextDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/court_room_no"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvCourtNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/party_name_1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvPartyName1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/party_name_2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvPartyName2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/court"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvCourt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/advocate_party_1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvAdvocateParty1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/advocate_party_2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvAdvocateParty2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/mobile_no"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvMobileNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/whatsapp_number"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvWhatsappNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".4"
+                    android:fontFamily="@font/font_regular"
+                    android:text="@string/email"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/font_regular"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight=".6"
+                    android:fontFamily="@font/font_regular"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_two" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llWhatsApp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_round_color_primary"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_whats_app" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:text="@string/whatsapp"
+                        android:textColor="@color/white"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llCall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_round_color_primary"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_call"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:text="@string/call"
+                        android:textColor="@color/white"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAddContact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_round_color_primary"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_add_contact" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:text="@string/add_contact"
+                        android:textColor="@color/black"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_round_color_primary"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_edit"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:text="@string/edit"
+                        android:textColor="@color/white"
+                        android:textSize="13dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

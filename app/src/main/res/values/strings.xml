@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">The Law House</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_mobile_number">Enter your mobile number</string>
+    <string name="enter_your_confirm_password">Enter your confirm password</string>
+    <string name="register">Register</string>
+    <string name="forgot_password_">Forgot Password</string>
+    <string name="submit">Submit</string>
+    <string name="or">Or</string>
+    <string name="add_new_case">Add New Case</string>
+    <string name="view_all_case">View All Case</string>
+    <string name="reminder">Reminder</string>
+    <string name="segments_of_law_and_legal">Segments of law and Legal</string>
+    <string name="useful_link">Useful Link</string>
+    <string name="phone_book">Phone Book</string>
+    <string name="find_your_case">Find your case</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="add_new_member">Add New Member</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="enter_your_otp">Enter your OTP</string>
+    <string name="last_date">Last Date</string>
+    <string name="next_date">Next Date</string>
+    <string name="court_room_no">Court / Room No</string>
+    <string name="court">Court</string>
+    <string name="party_name_1">Party Name 1</string>
+    <string name="advocate_party_1">Advocate Party 1</string>
+    <string name="party_name_2">Party Name 2</string>
+    <string name="advocate_party_2">Advocate Party 2</string>
+    <string name="stages">Stages</string>
+    <string name="mobile_no">Mobile No</string>
+    <string name="email">Email</string>
+    <string name="clear">Clear</string>
+    <string name="cash_type_no">Case Type / No</string>
+    <string name="user_name">User Name</string>
+    <string name="full_name">Full Name</string>
+    <string name="resend_otp">Resend Otp</string>
+    <string name="whatsapp_mobile_no">WhatsApp Mobile No.</string>
+    <string name="date_not_found">Date Not Found..</string>
+    <string name="whatsapp_number">WhatsApp No</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="call">Call</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="edit">Edit</string>
+
+    <string name="dialog_permission_title">Grant Permissions</string>
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="go_to_settings">GOTO SETTINGS</string>
+    <string name="update">Update</string>
+    <string name="logout">Logout</string>
+
+    <string name="exit_dialog_text">Are you sure you want to exit?</string>
+    <string name="find_case_by_date">Find Case By Date</string>
+    <string name="find_case_by_mobile">Find Case By Mobile</string>
+    <string name="search">Search</string>
+    <string name="new_password">New Password</string>
+    <string name="appointment">Appointment</string>
+    <string name="name">Name</string>
+    <string name="enter_reason">Enter Reason</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="appointment_reason">Appointment Reason</string>
+    <string name="status">Status</string>
+    <string name="view_all_appointment">View All Appointment</string>
+    <string name="change_status">Change Status</string>
+    <string name="enter_your_usefull_link">Enter Your Usefull Link</string>
+    <string name="add_segements_of_law_and_legal">Add Segements of law and Legal</string>
+    <string name="enter_title">Enter Title</string>
+    <string name="enter_content">Enter Content</string>
+    <string name="about_us">About US</string>
+    <string name="case_calender">Cases Calender</string>
+    <string name="delete">Delete</string>
+    <string name="completed_cases">Dispose Cases</string>
+    <string name="comlete">Complete</string>
+    <string name="add_new_appointment">Add New Appointment</string>
+    <string name="approve_list">Approve List</string>
+    <string name="broadcast">Broadcast</string>
+    <string name="news">News</string>
+    <string-array name="spLinkArray">
+        <item>Enter your status</item>
+        <item>show</item>
+        <item>hide</item>
+    </string-array>
+</resources>
