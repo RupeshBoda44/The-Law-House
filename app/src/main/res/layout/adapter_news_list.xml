@@ -23,6 +23,7 @@
                 android:src="@drawable/img_news_demo" />
 
             <LinearLayout
+                android:id="@+id/llSubMain"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"

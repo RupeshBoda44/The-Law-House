@@ -9,38 +9,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.thelawhouse.Activity.AddNewsActivity;
 import com.thelawhouse.Activity.MainActivity;
-import com.thelawhouse.Adapter.AllUsefullLinkAdapter;
 import com.thelawhouse.Adapter.NewsListAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.NewsListModel;
-import com.thelawhouse.Model.UsefullLinkListModel;
 import com.thelawhouse.Model.VerifyModel;
 import com.thelawhouse.R;
+import com.thelawhouse.Utils.Constants;
+import com.thelawhouse.Utils.PreferenceHelper;
 import com.thelawhouse.Utils.ProgressHUD;
 import com.thelawhouse.Utils.Utils;
 import com.thelawhouse.Utils.WebApiClient;
 import com.thelawhouse.databinding.FragNewsListBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 
 public class FragNewsList extends Fragment {
     private FragNewsListBinding mBinding;
     private MainActivity mainActivity;
-
+    List<NewsListModel.News_data> caseList_data = new ArrayList<>();
     private int page = 0;
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -51,24 +56,33 @@ public class FragNewsList extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_news_list, container, false);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
+        mainActivity.newsTitle();
         onClickListener();
 //        setData();
         return mBinding.getRoot();
     }
 
     private void setData() {
+        caseList_data = new ArrayList<>();
         page = 0;
         isLoading = false;
         isLastPage = false;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mBinding.rvNewsList.setLayoutManager(linearLayoutManager);
-        mAdapter = new NewsListAdapter(getActivity(),
+        mAdapter = new NewsListAdapter(caseList_data, getActivity(),
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String mobileNum) {
                         delete(mobileNum);
                     }
-                });
+                }, new RecyclerViewClickListener2() {
+            @Override
+            public void ImageViewListClicked(String id) {
+                Intent intent = new Intent(getActivity(), AddNewsActivity.class);
+                intent.putExtra("linkId", id);
+                startActivity(intent);
+            }
+        });
         mBinding.rvNewsList.setAdapter(mAdapter);
 
         mBinding.rvNewsList.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
@@ -145,10 +159,14 @@ public class FragNewsList extends Fragment {
                     assert response.body() != null;
                     if (response.code() == 200) {
                         if (response.body().message.equalsIgnoreCase("success")) {
+                            PreferenceHelper.putString(Constants.ImagePath, response.body().news_image_url);
                             mBinding.rvNewsList.setVisibility(View.VISIBLE);
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             NewsListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvNewsList.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -211,6 +229,16 @@ public class FragNewsList extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101) {
+            if (resultCode == RESULT_OK) {
+//                setData();
+            }
+        }
     }
 
     public void onBackPressed() {

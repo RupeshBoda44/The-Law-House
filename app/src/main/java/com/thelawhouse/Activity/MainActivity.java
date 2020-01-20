@@ -15,25 +15,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.thelawhouse.Fragment.FragAddAppointment;
-import com.thelawhouse.Fragment.FragAddNewCase;
-import com.thelawhouse.Fragment.FragApproveList;
-import com.thelawhouse.Fragment.FragCaseCalenderList;
-import com.thelawhouse.Fragment.FragCompletedCases;
-import com.thelawhouse.Fragment.FragFindCaseByMobile;
-import com.thelawhouse.Fragment.FragNewsList;
-import com.thelawhouse.Fragment.FragPhoneBookList;
-import com.thelawhouse.Fragment.FragSegmentLawList;
-import com.thelawhouse.Fragment.FragUnupdatedCases;
-import com.thelawhouse.Fragment.FragUsefullLinkList;
+import com.thelawhouse.Fragment.FragDashboard;
 import com.thelawhouse.Fragment.MyAppointmentsFragment;
 import com.thelawhouse.Model.BroadcastMessageModel;
 import com.thelawhouse.Model.ExpandedMenuModel;
@@ -72,66 +61,67 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String[] separated = login_access.split(",", 2);
         String user_a = separated[0].trim();
         String user_b = separated[1].trim();
-        if (PreferenceHelper.getString(Constants.USER_ID, "").equalsIgnoreCase(user_a) ||
-                PreferenceHelper.getString(Constants.USER_ID, "").equalsIgnoreCase(user_b)) {
-            mBinding.drawer.llApproveList.setVisibility(View.VISIBLE);
-            mBinding.drawer.llNews.setVisibility(View.VISIBLE);
-        } else {
-            mBinding.drawer.llApproveList.setVisibility(View.GONE);
-            mBinding.drawer.llNews.setVisibility(View.GONE);
-        }
-        if (PreferenceHelper.getString(Constants.LOGINTYPE, "").equalsIgnoreCase("guest")) {
-            mBinding.drawer.llAddNewCase.setVisibility(View.GONE);
-            mBinding.drawer.llViewAllCase.setVisibility(View.GONE);
-            mBinding.drawer.llReminder.setVisibility(View.GONE);
-            mBinding.drawer.llAppointment.setVisibility(View.GONE);
-            mBinding.drawer.llFindCaseByMobile.setVisibility(View.GONE);
-            mBinding.drawer.llFindCaseByDate.setVisibility(View.GONE);
-            mBinding.drawer.llCaseCalender.setVisibility(View.GONE);
-            mBinding.drawer.llCompletedCases.setVisibility(View.GONE);
-            mBinding.drawer.llReminder.setVisibility(View.GONE);
-            mBinding.drawer.tvAllAppointment.setVisibility(View.GONE);
-            mBinding.drawer.llAboutUs.setVisibility(View.GONE);
-        }
+//        if (PreferenceHelper.getString(Constants.USER_ID, "").equalsIgnoreCase(user_a) ||
+//                PreferenceHelper.getString(Constants.USER_ID, "").equalsIgnoreCase(user_b)) {
+//            mBinding.drawer.llApproveList.setVisibility(View.VISIBLE);
+//            mBinding.drawer.llNews.setVisibility(View.VISIBLE);
+//        } else {
+//            mBinding.drawer.llApproveList.setVisibility(View.GONE);
+//            mBinding.drawer.llNews.setVisibility(View.GONE);
+//        }
+//        if (PreferenceHelper.getString(Constants.LOGINTYPE, "").equalsIgnoreCase("guest")) {
+//            mBinding.drawer.llAddNewCase.setVisibility(View.GONE);
+//            mBinding.drawer.llViewAllCase.setVisibility(View.GONE);
+//            mBinding.drawer.llReminder.setVisibility(View.GONE);
+//            mBinding.drawer.llAppointment.setVisibility(View.GONE);
+//            mBinding.drawer.llFindCaseByMobile.setVisibility(View.GONE);
+//            mBinding.drawer.llFindCaseByDate.setVisibility(View.GONE);
+//            mBinding.drawer.llCaseCalender.setVisibility(View.GONE);
+//            mBinding.drawer.llCompletedCases.setVisibility(View.GONE);
+//            mBinding.drawer.llReminder.setVisibility(View.GONE);
+//            mBinding.drawer.tvAllAppointment.setVisibility(View.GONE);
+//            mBinding.drawer.llAboutUs.setVisibility(View.GONE);
+//        }
+        selectFirstItemAsDefault();
         //navigation Drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                mContext, mBinding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mBinding.drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null && !bundle.getString("caseId").equalsIgnoreCase("")) {
-            FragmentManager fragmentManager2 = getSupportFragmentManager();
-            if (fragmentManager2 != null) {
-                Fragment fragment2 = new FragAddNewCase();
-                Bundle bundle2 = new Bundle();
-                bundle2.putString("caseId", bundle.getString("caseId"));
-                fragment2.setArguments(bundle);
-                fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).commit();
-            }
-        } else {
-            selectFirstItemAsDefault();
-        }
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                mContext, mBinding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mBinding.drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//        Bundle bundle = getIntent().getExtras();
+//        if (bundle != null && !bundle.getString("caseId").equalsIgnoreCase("")) {
+//            FragmentManager fragmentManager2 = getSupportFragmentManager();
+//            if (fragmentManager2 != null) {
+//                Fragment fragment2 = new FragAddNewCase();
+//                Bundle bundle2 = new Bundle();
+//                bundle2.putString("caseId", bundle.getString("caseId"));
+//                fragment2.setArguments(bundle);
+//                fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).commit();
+//            }
+//        } else {
+//        }
 
-        mBinding.navView.setNavigationItemSelectedListener(mContext);
-        mBinding.toolbar.ivNavigation.setOnClickListener(mContext);
+//        mBinding.navView.setNavigationItemSelectedListener(mContext);
+//        mBinding.toolbar.ivNavigation.setOnClickListener(mContext);
         mBinding.toolbar.ivBack.setOnClickListener(mContext);
-        mBinding.drawer.tvAddNewCase.setOnClickListener(mContext);
+//        mBinding.drawer.tvAddNewCase.setOnClickListener(mContext);
 //        mBinding.drawer.tvViewAllCase.setOnClickListener(mContext);
-        mBinding.drawer.tvLogout.setOnClickListener(mContext);
-        mBinding.drawer.tvFindCaseByMobile.setOnClickListener(mContext);
-        mBinding.drawer.tvFindCaseByDate.setOnClickListener(mContext);
+//        mBinding.drawer.tvLogout.setOnClickListener(mContext);
+//        mBinding.drawer.tvFindCaseByMobile.setOnClickListener(mContext);
+//        mBinding.drawer.tvFindCaseByDate.setOnClickListener(mContext);
 //        mBinding.drawer.tvReminder.setOnClickListener(mContext);
-        mBinding.drawer.tvAppointment.setOnClickListener(mContext);
-        mBinding.drawer.tvAllAppointment.setOnClickListener(mContext);
-        mBinding.drawer.tvUsefulLink.setOnClickListener(mContext);
-        mBinding.drawer.tvPhoneBook.setOnClickListener(mContext);
-        mBinding.drawer.tvSegment.setOnClickListener(mContext);
-        mBinding.drawer.tvAboutUs.setOnClickListener(mContext);
-        mBinding.drawer.tvCaseCalender.setOnClickListener(mContext);
-        mBinding.drawer.tvCompletedCases.setOnClickListener(mContext);
-        mBinding.drawer.tvUnUpdatedCases.setOnClickListener(mContext);
-        mBinding.drawer.tvNews.setOnClickListener(mContext);
-        mBinding.drawer.tvApproveList.setOnClickListener(mContext);
+//        mBinding.drawer.tvAppointment.setOnClickListener(mContext);
+//        mBinding.drawer.tvAllAppointment.setOnClickListener(mContext);
+//        mBinding.drawer.tvUsefulLink.setOnClickListener(mContext);
+//        mBinding.drawer.tvPhoneBook.setOnClickListener(mContext);
+//        mBinding.drawer.tvSegment.setOnClickListener(mContext);
+//        mBinding.drawer.tvAboutUs.setOnClickListener(mContext);
+//        mBinding.drawer.tvCaseCalender.setOnClickListener(mContext);
+//        mBinding.drawer.tvCompletedCases.setOnClickListener(mContext);
+//        mBinding.drawer.tvUnUpdatedCases.setOnClickListener(mContext);
+//        mBinding.drawer.tvNews.setOnClickListener(mContext);
+//        mBinding.drawer.tvApproveList.setOnClickListener(mContext);
+//        mBinding.drawer.tvBroadcast.setOnClickListener(mContext);
         ScrollViewText scrollViewText = (ScrollViewText) findViewById(R.id.tvBottom);
         scrollViewText.startScroll();
         scrollViewText.setOnTouchListener(new View.OnTouchListener() {
@@ -147,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
         });
-
         broadCastMessage();
     }
 
@@ -192,9 +181,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void selectFirstItemAsDefault() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
-            mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.case_calender));
-            mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-            Fragment fragment = new FragCaseCalenderList();
+            mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.app_name));
+//            mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+            Fragment fragment = new FragDashboard();
             fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
         }
     }
@@ -231,13 +220,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void ClickcableFalse() {
         mBinding.toolbar.ivBack.setColorFilter(getResources().getColor(R.color.colorPrimary));
         mBinding.toolbar.ivBack.setEnabled(false);
-        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.case_calender));
+//        mBinding.toolbar.tvTitle.setTextColor(getResources().getColor(R.color.white));
+//        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.case_calender));
     }
 
     public void ClickcableTrue() {
         mBinding.toolbar.ivBack.setColorFilter(getResources().getColor(R.color.white));
         mBinding.toolbar.ivBack.setEnabled(true);
+        mBinding.toolbar.tvTitle.setTextColor(getResources().getColor(R.color.white));
+//        selectFirstItemAsDefault();
     }
+
+//    public void ClickcableDispose() {
+//        mBinding.toolbar.tvTitle.setTextColor(getResources().getColor(R.color.red));
+//    }
 
     public void editCase() {
         mBinding.toolbar.tvTitle.setText("Edit Case");
@@ -251,8 +247,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBinding.toolbar.tvTitle.setText("Appointment");
     }
 
-    public void editUsefullLink() {
-        mBinding.toolbar.tvTitle.setText("Edit Usefull Link");
+    public void appointmentTitle() {
+        mBinding.toolbar.tvTitle.setText("Appointment");
+    }
+
+    public void serviceTitle() {
+        mBinding.toolbar.tvTitle.setText("Service");
+    }
+
+    public void caseTitle() {
+        mBinding.toolbar.tvTitle.setText("Case");
+    }
+
+    public void phoneBookTitle() {
+        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.phone_book));
+    }
+
+    public void newsTitle() {
+        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.news));
+    }
+
+    public void approveListTitle() {
+        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.approve_list));
+    }
+
+    public void broadcastTitle() {
+        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.broadcast));
     }
 
     public void addUsefullLink() {
@@ -266,105 +286,116 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ivNavigation:
-                if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    mBinding.drawerLayout.openDrawer(GravityCompat.START);
-                }
-                break;
-            case R.id.tvAddNewCase:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.add_new_case));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                Fragment fragment = new FragAddNewCase();
-                fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
-                break;
-            case R.id.tvCaseCalender:
-                selectFirstItemAsDefault();
-                break;
-            case R.id.tvCompletedCases:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.completed_cases));
-                mBinding.toolbar.tvTitle.setTextColor(getResources().getColor(R.color.red));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager3 = getSupportFragmentManager();
-                Fragment fragment3 = new FragCompletedCases();
-                fragmentManager3.beginTransaction().replace(R.id.contain_layout, fragment3).addToBackStack(null).commit();
-                break;
-            case R.id.tvUnUpdatedCases:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.unupdated_cases));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager10 = getSupportFragmentManager();
-                Fragment fragment10 = new FragUnupdatedCases();
-                fragmentManager10.beginTransaction().replace(R.id.contain_layout, fragment10).addToBackStack(null).commit();
-                break;
-            case R.id.tvNews:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.news));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager11 = getSupportFragmentManager();
-                Fragment fragment11 = new FragNewsList();
-                fragmentManager11.beginTransaction().replace(R.id.contain_layout, fragment11).addToBackStack(null).commit();
-                break;
-            case R.id.tvLogout:
-                logoutDialog();
-                break;
-            case R.id.tvFindCaseByMobile:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.find_case_by_mobile));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager2 = getSupportFragmentManager();
-                Fragment fragment2 = new FragFindCaseByMobile();
-                fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).addToBackStack(null).commit();
-                break;
-            case R.id.tvAppointment:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.appointment));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager4 = getSupportFragmentManager();
-                Fragment fragment4 = new FragAddAppointment();
-                fragmentManager4.beginTransaction().replace(R.id.contain_layout, fragment4).addToBackStack(null).commit();
-                break;
-            case R.id.tvAllAppointment:
-                mBinding.toolbar.tvTitle.setText("Appointments");
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager5 = getSupportFragmentManager();
-                Fragment fragment5 = new MyAppointmentsFragment();
-                fragmentManager5.beginTransaction().replace(R.id.contain_layout, fragment5).addToBackStack(null).commit();
-                break;
-            case R.id.tvUsefulLink:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.useful_link));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager6 = getSupportFragmentManager();
-                Fragment fragment6 = new FragUsefullLinkList();
-                fragmentManager6.beginTransaction().replace(R.id.contain_layout, fragment6).addToBackStack(null).commit();
-                break;
-            case R.id.tvPhoneBook:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.phone_book));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager7 = getSupportFragmentManager();
-                Fragment fragment7 = new FragPhoneBookList();
-                fragmentManager7.beginTransaction().replace(R.id.contain_layout, fragment7).addToBackStack(null).commit();
-                break;
-            case R.id.tvSegment:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.segments_of_law_and_legal));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager8 = getSupportFragmentManager();
-                Fragment fragment8 = new FragSegmentLawList();
-                fragmentManager8.beginTransaction().replace(R.id.contain_layout, fragment8).addToBackStack(null).commit();
-                break;
-            case R.id.tvApproveList:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.approve_list));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager9 = getSupportFragmentManager();
-                Fragment fragment9 = new FragApproveList();
-                fragmentManager9.beginTransaction().replace(R.id.contain_layout, fragment9).addToBackStack(null).commit();
-                break;
-            case R.id.tvReminder:
-               /* Intent intent = new Intent(mContext, CustomCalenderActivity.class);
-                startActivity(intent);
-                finish();*/
-                break;
-            case R.id.tvAboutUs:
-                //Blank Link
-                break;
+//            case R.id.ivNavigation:
+//                if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//                    mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                } else {
+//                    mBinding.drawerLayout.openDrawer(GravityCompat.START);
+//                }
+//                break;
+//            case R.id.tvAddNewCase:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.add_new_case));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                Fragment fragment = new FragAddNewCase();
+//                fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvCaseCalender:
+//                selectFirstItemAsDefault();
+//                break;
+//            case R.id.tvCompletedCases:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.completed_cases));
+//                mBinding.toolbar.tvTitle.setTextColor(getResources().getColor(R.color.red));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager3 = getSupportFragmentManager();
+//                Fragment fragment3 = new FragCompletedCases();
+//                fragmentManager3.beginTransaction().replace(R.id.contain_layout, fragment3).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvUnUpdatedCases:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.unupdated_cases));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager10 = getSupportFragmentManager();
+//                Fragment fragment10 = new FragUnupdatedCases();
+//                fragmentManager10.beginTransaction().replace(R.id.contain_layout, fragment10).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvNews:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.news));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager11 = getSupportFragmentManager();
+//                Fragment fragment11 = new FragNewsList();
+//                fragmentManager11.beginTransaction().replace(R.id.contain_layout, fragment11).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvLogout:
+//                logoutDialog();
+//                break;
+//            case R.id.tvFindCaseByMobile:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.find_case_by_mobile));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager2 = getSupportFragmentManager();
+//                Fragment fragment2 = new FragFindCaseByMobile();
+//                fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvAppointment:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.appointment));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager4 = getSupportFragmentManager();
+//                Fragment fragment4 = new FragAddAppointment();
+//                fragmentManager4.beginTransaction().replace(R.id.contain_layout, fragment4).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvAllAppointment:
+//                mBinding.toolbar.tvTitle.setText("Appointments");
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager5 = getSupportFragmentManager();
+//                Fragment fragment5 = new MyAppointmentsFragment();
+//                fragmentManager5.beginTransaction().replace(R.id.contain_layout, fragment5).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvUsefulLink:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.useful_link));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager6 = getSupportFragmentManager();
+//                Fragment fragment6 = new FragUsefullLinkList();
+//                fragmentManager6.beginTransaction().replace(R.id.contain_layout, fragment6).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvPhoneBook:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.phone_book));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager7 = getSupportFragmentManager();
+//                Fragment fragment7 = new FragPhoneBookList();
+//                fragmentManager7.beginTransaction().replace(R.id.contain_layout, fragment7).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvSegment:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.segments_of_law_and_legal));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager8 = getSupportFragmentManager();
+//                Fragment fragment8 = new FragSegmentLawList();
+//                fragmentManager8.beginTransaction().replace(R.id.contain_layout, fragment8).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvApproveList:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.approve_list));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager9 = getSupportFragmentManager();
+//                Fragment fragment9 = new FragApproveList();
+//                fragmentManager9.beginTransaction().replace(R.id.contain_layout, fragment9).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvBroadcast:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.broadcast));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager12 = getSupportFragmentManager();
+//                Fragment fragment12 = new FragBroadcast();
+//                fragmentManager12.beginTransaction().replace(R.id.contain_layout, fragment12).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvReminder:
+//               /* Intent intent = new Intent(mContext, CustomCalenderActivity.class);
+//                startActivity(intent);
+//                finish();*/
+//                break;
+//            case R.id.tvAboutUs:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.about_us));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager13 = getSupportFragmentManager();
+//                Fragment fragment13 = new FragAboutUs();
+//                fragmentManager13.beginTransaction().replace(R.id.contain_layout, fragment13).addToBackStack(null).commit();
+//                break;
             case R.id.ivBack:
                 selectFirstItemAsDefault();
                 break;

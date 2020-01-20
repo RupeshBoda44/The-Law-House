@@ -12,7 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WebApiClient {
     private static final String KEY_BASE_URL = "https://satidemo.xyz/the_law_house/";
-
+    // https://satidemo.xyz/the_law_house/
+    // https://www.advocatejigarpandya.com/the_law_house/
     public static WebServices getInstance() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

@@ -52,6 +52,24 @@ public class FragCompletedAppointment extends Fragment implements View.OnClickLi
     private boolean isLastPage = false;
     private CompletedAppointmentListAdapter mAdapter;
     MainActivity mainActivity;
+    private boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
 
     public static FragCompletedAppointment newInstance() {
         return new FragCompletedAppointment();
@@ -69,6 +87,9 @@ public class FragCompletedAppointment extends Fragment implements View.OnClickLi
                 setData();
             }
         });
+        if (isVisible){
+            setData();
+        }
         return mBinding.getRoot();
     }
 
@@ -184,6 +205,9 @@ public class FragCompletedAppointment extends Fragment implements View.OnClickLi
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             CompletedAppointmentListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvAllAppointment.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -222,7 +246,6 @@ public class FragCompletedAppointment extends Fragment implements View.OnClickLi
     @Override
     public void onResume() {
         super.onResume();
-        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

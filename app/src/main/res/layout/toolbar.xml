@@ -22,8 +22,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:padding="5dp"
-                android:tint="@color/white"
-                android:src="@drawable/ic_back" />
+                android:src="@drawable/ic_back"
+                android:tint="@color/white" />
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -51,8 +51,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:clickable="false"
                 android:padding="8dp"
-                android:src="@drawable/ic_navigation_drawer"
                 android:tint="@color/white" />
         </RelativeLayout>
     </LinearLayout>

@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -23,9 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
-import com.thelawhouse.Fragment.GFragPhoneBookList;
-import com.thelawhouse.Fragment.GFragSegmentLawList;
-import com.thelawhouse.Fragment.GFragUsefullLinkList;
+import com.thelawhouse.Fragment.GFragDashboard;
 import com.thelawhouse.Model.BroadcastMessageModel;
 import com.thelawhouse.Model.ExpandedMenuModel;
 import com.thelawhouse.R;
@@ -59,31 +56,33 @@ public class GMainActivity extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mBinding = DataBindingUtil.setContentView(mContext, R.layout.activity_gmain);
-        mBinding.drawer.llAddNewCase.setVisibility(View.GONE);
-        mBinding.drawer.llViewAllCase.setVisibility(View.GONE);
-        mBinding.drawer.llReminder.setVisibility(View.GONE);
-        mBinding.drawer.llAppointment.setVisibility(View.GONE);
-        mBinding.drawer.llFindCaseByMobile.setVisibility(View.GONE);
-        mBinding.drawer.llFindCaseByDate.setVisibility(View.GONE);
-        mBinding.drawer.llCaseCalender.setVisibility(View.GONE);
-        mBinding.drawer.llCompletedCases.setVisibility(View.GONE);
-        mBinding.drawer.llReminder.setVisibility(View.GONE);
-        mBinding.drawer.tvAllAppointment.setVisibility(View.GONE);
-        mBinding.drawer.llAboutUs.setVisibility(View.GONE);
-        mBinding.drawer.llBroadcast.setVisibility(View.GONE);
-        //navigation Drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                mContext, mBinding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mBinding.drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+//        mBinding.drawer.llAddNewCase.setVisibility(View.GONE);
+//        mBinding.drawer.llViewAllCase.setVisibility(View.GONE);
+//        mBinding.drawer.llReminder.setVisibility(View.GONE);
+//        mBinding.drawer.llFindCaseByMobile.setVisibility(View.GONE);
+//        mBinding.drawer.llFindCaseByDate.setVisibility(View.GONE);
+//        mBinding.drawer.llCaseCalender.setVisibility(View.GONE);
+//        mBinding.drawer.llCompletedCases.setVisibility(View.GONE);
+//        mBinding.drawer.llUnUpdatedCases.setVisibility(View.GONE);
+//        mBinding.drawer.llReminder.setVisibility(View.GONE);
+//        mBinding.drawer.llAboutUs.setVisibility(View.GONE);
+//        mBinding.drawer.llBroadcast.setVisibility(View.GONE);
+//        navigation Drawer
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                mContext, mBinding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mBinding.drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
         selectFirstItemAsDefault();
-        mBinding.navView.setNavigationItemSelectedListener(mContext);
-        mBinding.toolbar.ivNavigation.setOnClickListener(mContext);
+//        mBinding.navView.setNavigationItemSelectedListener(mContext);
+//        mBinding.toolbar.ivNavigation.setOnClickListener(mContext);
         mBinding.toolbar.ivBack.setOnClickListener(mContext);
-        mBinding.drawer.tvLogout.setOnClickListener(mContext);
-        mBinding.drawer.tvUsefulLink.setOnClickListener(mContext);
-        mBinding.drawer.tvPhoneBook.setOnClickListener(mContext);
-        mBinding.drawer.tvSegment.setOnClickListener(mContext);
+//        mBinding.drawer.tvLogout.setOnClickListener(mContext);
+//        mBinding.drawer.tvUsefulLink.setOnClickListener(mContext);
+//        mBinding.drawer.tvPhoneBook.setOnClickListener(mContext);
+//        mBinding.drawer.tvSegment.setOnClickListener(mContext);
+//        mBinding.drawer.tvAppointment.setOnClickListener(mContext);
+//        mBinding.drawer.tvAllAppointment.setOnClickListener(mContext);
+//        mBinding.drawer.tvSegment.setOnClickListener(mContext);
         ScrollViewText scrollViewText = (ScrollViewText) findViewById(R.id.tvBottom);
         scrollViewText.startScroll();
         scrollViewText.setOnTouchListener(new View.OnTouchListener() {
@@ -99,8 +98,34 @@ public class GMainActivity extends AppCompatActivity implements NavigationView.O
                 return false;
             }
         });
-
         broadCastMessage();
+    }
+
+    public void changeFragment(String id) {
+//        FragmentManager fragmentManager2 = getSupportFragmentManager();
+//        if (fragmentManager2 != null) {
+//            Fragment fragment2 = new GFragAddAppointment();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("appointmentId", id);
+//            fragment2.setArguments(bundle);
+//            fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).commit();
+//        }
+    }
+
+    public void editAppointment() {
+//        mBinding.toolbar.tvTitle.setText("Show Appointment");
+    }
+
+    public void viewAppointment() {
+//        FragmentManager fragmentManager2 = getSupportFragmentManager();
+//        if (fragmentManager2 != null) {
+//            Fragment fragment2 = new GMyAppointmentsFragment();
+//            fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).commit();
+//        }
+    }
+
+    public void addAppointment() {
+//        mBinding.toolbar.tvTitle.setText("Appointment");
     }
 
     private void broadCastMessage() {
@@ -144,9 +169,8 @@ public class GMainActivity extends AppCompatActivity implements NavigationView.O
     public void selectFirstItemAsDefault() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager != null) {
-            mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.segments_of_law_and_legal));
-            mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-            Fragment fragment = new GFragSegmentLawList();
+            mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.app_name));
+            Fragment fragment = new GFragDashboard();
             fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
         }
     }
@@ -183,7 +207,7 @@ public class GMainActivity extends AppCompatActivity implements NavigationView.O
     public void ClickcableFalse() {
         mBinding.toolbar.ivBack.setColorFilter(getResources().getColor(R.color.colorPrimary));
         mBinding.toolbar.ivBack.setEnabled(false);
-        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.segments_of_law_and_legal));
+        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.app_name));
     }
 
     public void ClickcableTrue() {
@@ -191,44 +215,62 @@ public class GMainActivity extends AppCompatActivity implements NavigationView.O
         mBinding.toolbar.ivBack.setEnabled(true);
     }
 
-    public void editUsefullLink() {
-        mBinding.toolbar.tvTitle.setText("Edit Usefull Link");
+    public void appointmentTitle() {
+        mBinding.toolbar.tvTitle.setText("Appointment");
     }
 
-    public void addUsefullLink() {
-        mBinding.toolbar.tvTitle.setText("Add Usefull Link");
+    public void serviceTitle() {
+        mBinding.toolbar.tvTitle.setText("Service");
+    }
+
+    public void phoneBookTitle() {
+        mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.phone_book));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ivNavigation:
-                if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    mBinding.drawerLayout.openDrawer(GravityCompat.START);
-                }
-                break;
-            case R.id.tvLogout:
-                logoutDialog();
-                break;
-            case R.id.tvUsefulLink:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.useful_link));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager6 = getSupportFragmentManager();
-                Fragment fragment6 = new GFragUsefullLinkList();
-                fragmentManager6.beginTransaction().replace(R.id.contain_layout, fragment6).addToBackStack(null).commit();
-                break;
-            case R.id.tvPhoneBook:
-                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.phone_book));
-                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
-                FragmentManager fragmentManager7 = getSupportFragmentManager();
-                Fragment fragment7 = new GFragPhoneBookList();
-                fragmentManager7.beginTransaction().replace(R.id.contain_layout, fragment7).addToBackStack(null).commit();
-                break;
-            case R.id.tvSegment:
-                selectFirstItemAsDefault();
-                break;
+//            case R.id.ivNavigation:
+//                if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//                    mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                } else {
+//                    mBinding.drawerLayout.openDrawer(GravityCompat.START);
+//                }
+//                break;
+//            case R.id.tvLogout:
+//                logoutDialog();
+//                break;
+//            case R.id.tvUsefulLink:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.useful_link));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager6 = getSupportFragmentManager();
+//                Fragment fragment6 = new GFragUsefullLinkList();
+//                fragmentManager6.beginTransaction().replace(R.id.contain_layout, fragment6).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvPhoneBook:
+//                selectFirstItemAsDefault();
+//                break;
+//            case R.id.tvSegment:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.segments_of_law_and_legal));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager8 = getSupportFragmentManager();
+//                Fragment fragment8 = new GFragSegmentLawList();
+//                fragmentManager8.beginTransaction().replace(R.id.contain_layout, fragment8).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvAppointment:
+//                mBinding.toolbar.tvTitle.setText(getResources().getString(R.string.appointment));
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager4 = getSupportFragmentManager();
+//                Fragment fragment4 = new GFragAddAppointment();
+//                fragmentManager4.beginTransaction().replace(R.id.contain_layout, fragment4).addToBackStack(null).commit();
+//                break;
+//            case R.id.tvAllAppointment:
+//                mBinding.toolbar.tvTitle.setText("Appointments");
+//                mBinding.drawerLayout.closeDrawer(GravityCompat.START);
+//                FragmentManager fragmentManager5 = getSupportFragmentManager();
+//                Fragment fragment5 = new GMyAppointmentsFragment();
+//                fragmentManager5.beginTransaction().replace(R.id.contain_layout, fragment5).addToBackStack(null).commit();
+//                break;
             case R.id.ivBack:
                 selectFirstItemAsDefault();
                 break;

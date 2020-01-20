@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,18 +19,20 @@ import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.AllSegmentLawAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.SegmentLawListModel;
 import com.thelawhouse.Model.VerifyModel;
 import com.thelawhouse.R;
-import com.thelawhouse.Utils.Constants;
-import com.thelawhouse.Utils.PreferenceHelper;
 import com.thelawhouse.Utils.ProgressHUD;
 import com.thelawhouse.Utils.Utils;
 import com.thelawhouse.Utils.WebApiClient;
 import com.thelawhouse.databinding.FragSagmentLawListBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +47,31 @@ public class FragSegmentLawList extends Fragment {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private AllSegmentLawAdapter mAdapter;
+    private boolean isVisible = false;
+    List<SegmentLawListModel.Segment_of_law_data> caseList_data = new ArrayList<>();
+    private boolean one = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+                one = false;
+            }
+        }
+    }
+
+    public static FragSegmentLawList newInstance() {
+        return new FragSegmentLawList();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,23 +79,33 @@ public class FragSegmentLawList extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
         onClickListener();
-//        setData();
+        if (isVisible) {
+            setData();
+        }
         return mBinding.getRoot();
     }
 
     private void setData() {
+        caseList_data = new ArrayList<>();
         page = 0;
         isLoading = false;
         isLastPage = false;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mBinding.rvSegementLaw.setLayoutManager(linearLayoutManager);
-        mAdapter = new AllSegmentLawAdapter(getActivity(),
+        mAdapter = new AllSegmentLawAdapter(caseList_data, getActivity(),
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String mobileNum) {
                         deleteSagementLaw(mobileNum);
                     }
-                });
+                }, new RecyclerViewClickListener2() {
+            @Override
+            public void ImageViewListClicked(String id) {
+                Intent intent = new Intent(getActivity(), AddSegmentLawAcitivity.class);
+                intent.putExtra("linkId", id);
+                startActivityForResult(intent, 103);
+            }
+        });
         mBinding.rvSegementLaw.setAdapter(mAdapter);
 
         mBinding.rvSegementLaw.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
@@ -94,7 +132,10 @@ public class FragSegmentLawList extends Fragment {
                 return isLoading;
             }
         });
-        loadData(page);
+        if (one == false) {
+            one = true;
+            loadData(page);
+        }
     }
 
     private void deleteSagementLaw(String linkId) {
@@ -149,6 +190,9 @@ public class FragSegmentLawList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             SegmentLawListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvSegementLaw.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -158,7 +202,7 @@ public class FragSegmentLawList extends Fragment {
                     mProgressHUD.dismissProgressDialog(mProgressHUD);
                     mBinding.rvSegementLaw.setVisibility(View.GONE);
                     mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
-                    Log.e("error", t.getMessage());
+                    Log.e("error", Objects.requireNonNull(t.getMessage()));
                 }
             });
         }
@@ -189,7 +233,7 @@ public class FragSegmentLawList extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddSegmentLawAcitivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 102);
             }
         });
     }
@@ -197,7 +241,6 @@ public class FragSegmentLawList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -211,6 +254,32 @@ public class FragSegmentLawList extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 102) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+                one = false;
+            }
+        } else if (resultCode == 103) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+                one = false;
+            }
+        }
     }
 
     public void onBackPressed() {

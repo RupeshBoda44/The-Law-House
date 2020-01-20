@@ -14,11 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.karumi.dexter.Dexter;
@@ -27,6 +27,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.marcohc.robotocalendar.RobotoCalendarView;
+import com.thelawhouse.Activity.EditCaseActivity;
 import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.CalenderCaseListAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
@@ -69,20 +70,51 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
     String finalNectDate = null;
     int currentSelectedMonth = 0;
     int currentSelectedYear = 0;
+    FragCase fragCase;
+    boolean isVisible = false;
+
+    public static FragCaseCalenderList newInstance() {
+        return new FragCaseCalenderList();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.activity_custom_calender, container, false);
         mainActivity = (MainActivity) getActivity();
-        mainActivity.ClickcableFalse();
-        mBinding.robotoCalendarPicker.setRobotoCalendarListener(this);
-        Date date = mBinding.robotoCalendarPicker.getDate();
-        Log.d("date", date.toString());
-        int Month = Integer.parseInt((String) android.text.format.DateFormat.format("MM", date));
-        currentSelectedMonth = Month;
-        int Year = Integer.parseInt((String) android.text.format.DateFormat.format("yyyy", date));
-        currentSelectedYear = Year;
-        getMonthCaseCount(currentSelectedYear, currentSelectedMonth);
+        mainActivity.ClickcableTrue();
+        fragCase = (FragCase.newInstance());
+        if (isVisible) {
+            mBinding.robotoCalendarPicker.setRobotoCalendarListener(this);
+            Date date = mBinding.robotoCalendarPicker.getDate();
+            Log.d("date", date.toString());
+            int Month = Integer.parseInt((String) android.text.format.DateFormat.format("MM", date));
+            currentSelectedMonth = Month;
+            int Year = Integer.parseInt((String) android.text.format.DateFormat.format("yyyy", date));
+            currentSelectedYear = Year;
+            getMonthCaseCount(currentSelectedYear, currentSelectedMonth);
+            if (mBinding.tvSelectedDate.getText().toString().equalsIgnoreCase("")) {
+                mBinding.tvSelectedDate.setVisibility(View.GONE);
+            } else {
+                mBinding.tvSelectedDate.setVisibility(View.VISIBLE);
+            }
+        }
         return mBinding.getRoot();
     }
 
@@ -147,12 +179,11 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
                                             String dtStart = strings.get(index);
                                             Format dateFormat = android.text.format.DateFormat.getDateFormat(getActivity());
                                             String pattern = ((SimpleDateFormat) dateFormat).toLocalizedPattern();
-                                            Log.d("pattern", pattern);
+//                                            Log.d("pattern", pattern);
                                             SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");
                                             try {
                                                 Date date1 = format.parse(dtStart);
-                                                System.out.println(date1);
-
+//                                                System.out.println(date1);
                                                 mBinding.robotoCalendarPicker.markCircleImage1(date1);
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
@@ -188,6 +219,11 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
     public void onDayClick(Date date) {
 //        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity());
         mBinding.tvSelectedDate.setText("Date : " + (date));
+        if (mBinding.tvSelectedDate.getText().toString().equalsIgnoreCase("")) {
+            mBinding.tvSelectedDate.setVisibility(View.GONE);
+        } else {
+            mBinding.tvSelectedDate.setVisibility(View.VISIBLE);
+        }
         Log.d("Date: ", String.valueOf((date)));
         String inputPattern = "dd/MM/yyyy";
         String outputPattern = "yyyy-MM-dd";
@@ -247,14 +283,26 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
                 new RecyclerViewClickListener2() {
                     @Override
                     public void ImageViewListClicked(String id) {
-                        FragmentManager fragmentManager2 = getFragmentManager();
-                        if (fragmentManager2 != null) {
-                            Fragment fragment2 = new FragAddNewCase();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("caseId", id);
-                            fragment2.setArguments(bundle);
-                            fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).commit();
-                        }
+//                        FragmentManager fragmentManager2 = getFragmentManager();
+//                        if (fragmentManager2 != null) {
+//                            ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.vpCase);
+//                            viewPager.setCurrentItem(1);
+//                            communicate.sendData(id);
+//                        FragAddNewCase fragment = new FragAddNewCase();
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("caseId", id);
+//                        fragment.setArguments(bundle);
+//                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.vpCase, fragment).commit();
+                        Intent intent = new Intent(getActivity(), EditCaseActivity.class);
+                        intent.putExtra("caseId", id);
+                        startActivityForResult(intent, 101);
+//                            Fragment fragment2 = new FragAddNewCase();
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString("caseId", id);
+//                            fragment2.setArguments(bundle);
+//                            fragmentManager2.beginTransaction().replace(R.id.contain_layout, fragment2).commit();
+
+//                        }
                     }
                 },
                 new RecyclerViewClickListener3() {
@@ -329,7 +377,6 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
         return params;
     }
 
-
     private void loadData(int page) {
         if (isInternetAvailable(getActivity())) {
             final ProgressHUD mProgressHUD = ProgressHUD.show(getActivity(), true, true, false, null);
@@ -345,6 +392,9 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             CaseListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvAllCase.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -403,6 +453,11 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
     @SuppressLint("SetTextI18n")
     public void onDayClick(String date) {
         mBinding.tvSelectedDate.setText("Date : " + date);
+        if (mBinding.tvSelectedDate.getText().toString().equalsIgnoreCase("")) {
+            mBinding.tvSelectedDate.setVisibility(View.GONE);
+        } else {
+            mBinding.tvSelectedDate.setVisibility(View.VISIBLE);
+        }
         String inputPattern = "dd/MM/yyyy";
         String outputPattern = "yyyy-MM-dd";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
@@ -427,6 +482,11 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
     @Override
     public void onRightButtonClick() {
         mBinding.tvSelectedDate.setText("");
+        if (mBinding.tvSelectedDate.getText().toString().equalsIgnoreCase("")) {
+            mBinding.tvSelectedDate.setVisibility(View.GONE);
+        } else {
+            mBinding.tvSelectedDate.setVisibility(View.VISIBLE);
+        }
         currentSelectedMonth = currentSelectedMonth + 1;
         if (currentSelectedMonth > 12) {
             currentSelectedMonth = 1;
@@ -440,6 +500,11 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
     @Override
     public void onLeftButtonClick() {
         mBinding.tvSelectedDate.setText("");
+        if (mBinding.tvSelectedDate.getText().toString().equalsIgnoreCase("")) {
+            mBinding.tvSelectedDate.setVisibility(View.GONE);
+        } else {
+            mBinding.tvSelectedDate.setVisibility(View.VISIBLE);
+        }
         currentSelectedMonth = currentSelectedMonth - 1;
         if (currentSelectedMonth < 1) {
             currentSelectedMonth = 12;
@@ -461,12 +526,27 @@ public class FragCaseCalenderList extends Fragment implements RobotoCalendarView
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                     mainActivity.hideSoftKeyboard(getActivity(), v);
-                    onBackPressed();
+//                    onBackPressed();
                     return true;
                 }
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 101) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
     }
 
     public void onBackPressed() {

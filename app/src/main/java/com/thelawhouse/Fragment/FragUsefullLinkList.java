@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.AllUsefullLinkAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.UsefullLinkListModel;
 import com.thelawhouse.Model.VerifyModel;
 import com.thelawhouse.R;
@@ -26,7 +28,9 @@ import com.thelawhouse.Utils.Utils;
 import com.thelawhouse.Utils.WebApiClient;
 import com.thelawhouse.databinding.FragUsefullLinkListBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -38,11 +42,33 @@ import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 public class FragUsefullLinkList extends Fragment {
     private FragUsefullLinkListBinding mBinding;
     private MainActivity mainActivity;
-
     private int page = 0;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private AllUsefullLinkAdapter mAdapter;
+    private boolean isVisible = false;
+    List<UsefullLinkListModel.Use_full_link_data> caseList_data = new ArrayList<>();
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static FragUsefullLinkList newInstance() {
+        return new FragUsefullLinkList();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,23 +76,33 @@ public class FragUsefullLinkList extends Fragment {
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
         onClickListener();
-//        setData();
+        if (isVisible) {
+            setData();
+        }
         return mBinding.getRoot();
     }
 
     private void setData() {
+        caseList_data = new ArrayList<>();
         page = 0;
         isLoading = false;
         isLastPage = false;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mBinding.rvUsefullLink.setLayoutManager(linearLayoutManager);
-        mAdapter = new AllUsefullLinkAdapter(getActivity(),
+        mAdapter = new AllUsefullLinkAdapter(caseList_data, getActivity(),
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String mobileNum) {
                         delete(mobileNum);
                     }
-                });
+                }, new RecyclerViewClickListener2() {
+            @Override
+            public void ImageViewListClicked(String id) {
+                Intent intent = new Intent(getActivity(), AddUsefullLinkActivity.class);
+                intent.putExtra("linkId", id);
+                startActivityForResult(intent, 103);
+            }
+        });
         mBinding.rvUsefullLink.setAdapter(mAdapter);
 
         mBinding.rvUsefullLink.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
@@ -147,6 +183,9 @@ public class FragUsefullLinkList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             UsefullLinkListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvUsefullLink.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -187,7 +226,7 @@ public class FragUsefullLinkList extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddUsefullLinkActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 101);
             }
         });
     }
@@ -195,7 +234,6 @@ public class FragUsefullLinkList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -209,6 +247,30 @@ public class FragUsefullLinkList extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 101) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        } else if (resultCode == 103) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
     }
 
     public void onBackPressed() {

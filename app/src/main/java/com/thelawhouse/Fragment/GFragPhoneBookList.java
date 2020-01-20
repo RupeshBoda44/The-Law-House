@@ -23,7 +23,6 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.thelawhouse.Activity.GMainActivity;
-import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.PhoneBookListAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
@@ -58,8 +57,9 @@ public class GFragPhoneBookList extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_phonebook_list, container, false);
         mainActivity = (GMainActivity) getActivity();
         mainActivity.ClickcableTrue();
+        mainActivity.phoneBookTitle();
         onClickListener();
-//        setData();
+        setData();
         return mBinding.getRoot();
     }
 
@@ -125,7 +125,6 @@ public class GFragPhoneBookList extends Fragment {
     }
 
 
-
     private void loadData(int page) {
 
         if (isInternetAvailable(getActivity())) {
@@ -142,6 +141,9 @@ public class GFragPhoneBookList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             PhonebookModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvPhoneBookList.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -183,7 +185,7 @@ public class GFragPhoneBookList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
+//        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

@@ -16,13 +16,16 @@ import com.thelawhouse.Activity.GMainActivity;
 import com.thelawhouse.Adapter.AllUsefullLinkAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.UsefullLinkListModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.ProgressHUD;
 import com.thelawhouse.Utils.WebApiClient;
 import com.thelawhouse.databinding.FragUsefullLinkListBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -34,11 +37,33 @@ import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 public class GFragUsefullLinkList extends Fragment {
     private FragUsefullLinkListBinding mBinding;
     private GMainActivity mainActivity;
-
     private int page = 0;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private AllUsefullLinkAdapter mAdapter;
+    List<UsefullLinkListModel.Use_full_link_data> caseList_data = new ArrayList<>();
+    private boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static GFragUsefullLinkList newInstance() {
+        return new GFragUsefullLinkList();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,22 +72,31 @@ public class GFragUsefullLinkList extends Fragment {
         mainActivity.ClickcableTrue();
         mBinding.tvAddLink.setVisibility(View.GONE);
 //        setData();
+        if (isVisible) {
+            setData();
+        }
         return mBinding.getRoot();
     }
 
     private void setData() {
+        caseList_data = new ArrayList<>();
         page = 0;
         isLoading = false;
         isLastPage = false;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mBinding.rvUsefullLink.setLayoutManager(linearLayoutManager);
-        mAdapter = new AllUsefullLinkAdapter(getActivity(),
+        mAdapter = new AllUsefullLinkAdapter(caseList_data, getActivity(),
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String mobileNum) {
 
                     }
-                });
+                }, new RecyclerViewClickListener2() {
+            @Override
+            public void ImageViewListClicked(String id) {
+
+            }
+        });
         mBinding.rvUsefullLink.setAdapter(mAdapter);
 
         mBinding.rvUsefullLink.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
@@ -108,6 +142,9 @@ public class GFragUsefullLinkList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             UsefullLinkListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvUsefullLink.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -146,7 +183,7 @@ public class GFragUsefullLinkList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
+//        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

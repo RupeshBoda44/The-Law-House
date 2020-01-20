@@ -11,16 +11,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.thelawhouse.Model.AddNewsModel;
-import com.thelawhouse.Model.AddUsefullLinkModel;
-import com.thelawhouse.Model.UsefullLinkListModel;
-import com.thelawhouse.Model.VerifyModel;
+import com.thelawhouse.Model.NewsListModel;
 import com.thelawhouse.R;
+import com.thelawhouse.Utils.Constants;
+import com.thelawhouse.Utils.PreferenceHelper;
 import com.thelawhouse.Utils.ProgressHUD;
 import com.thelawhouse.Utils.TakePicture;
 import com.thelawhouse.Utils.Utils;
@@ -91,17 +92,23 @@ public class AddNewsActivity extends AppCompatActivity {
     private void getData(String linkId) {
         if (isInternetAvailable(mContext)) {
             ProgressHUD mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
-            WebApiClient.getInstance().UsefullLinkDetails(paramUpdate(linkId)).enqueue(new Callback<UsefullLinkListModel>() {
+            WebApiClient.getInstance().NewsDetail(paramUpdate(linkId)).enqueue(new Callback<NewsListModel>() {
                 @Override
-                public void onResponse(Call<UsefullLinkListModel> call, Response<UsefullLinkListModel> response) {
+                public void onResponse(Call<NewsListModel> call, Response<NewsListModel> response) {
                     mProgressHUD.dismissProgressDialog(mProgressHUD);
                     Log.e("Response :", response.message() + "");
                     if (response.code() == 200) {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            mBinding.edtNewsDetail.setText(response.body().use_full_link_data.get(0).content);
-                            mBinding.edtTitle.setText(response.body().use_full_link_data.get(0).status);
+                            mBinding.edtNewsDetail.setText(response.body().news_data.get(0).contents);
+                            mBinding.edtTitle.setText(response.body().news_data.get(0).title);
+                            Glide.with(mContext)
+                                    .load(PreferenceHelper.getString(Constants.ImagePath, "") + response.body().news_data.get(0).news_image)
+                                    .placeholder(R.drawable.img_news_demo)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(mBinding.ivNewsImg);
                         } else {
                             Utils.showDialog(mContext, response.body().message + "");
                         }
@@ -109,37 +116,7 @@ public class AddNewsActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<UsefullLinkListModel> call, Throwable t) {
-                    mProgressHUD.dismissProgressDialog(mProgressHUD);
-                    Log.e("error", t.getMessage());
-                }
-            });
-        } else {
-            Utils.showDialog(mContext, "Check Your Internet.");
-        }
-    }
-
-    private void update(String linkId) {
-        if (isInternetAvailable(mContext)) {
-            ProgressHUD mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
-            WebApiClient.getInstance().UpdateUsefullLink(paramUpdate(linkId)).enqueue(new Callback<VerifyModel>() {
-                @Override
-                public void onResponse(Call<VerifyModel> call, Response<VerifyModel> response) {
-                    mProgressHUD.dismissProgressDialog(mProgressHUD);
-                    Log.e("Response :", response.message() + "");
-                    if (response.code() == 200) {
-                        Log.e("response", response.body() + "");
-                        assert response.body() != null;
-                        if (response.body().message.equalsIgnoreCase("success")) {
-                            onBackPressed();
-                        } else {
-                            Utils.showDialog(mContext, response.body().message + "");
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<VerifyModel> call, Throwable t) {
+                public void onFailure(Call<NewsListModel> call, Throwable t) {
                     mProgressHUD.dismissProgressDialog(mProgressHUD);
                     Log.e("error", t.getMessage());
                 }
@@ -151,16 +128,14 @@ public class AddNewsActivity extends AppCompatActivity {
 
     private Map<String, String> paramUpdate(String linkId) {
         Map<String, String> params = new HashMap<>();
-        params.put("use_full_link_id", linkId);
-        params.put("use_link", mBinding.edtNewsDetail.getText().toString());
-        params.put("title", mBinding.edtTitle.getText().toString());
+        params.put("news_id", linkId);
         return params;
     }
 
     private void onClickListener() {
         mBinding.toolbar.ivNavigation.setColorFilter(getResources().getColor(R.color.colorPrimary));
         mBinding.toolbar.ivNavigation.setEnabled(false);
-        mBinding.toolbar.tvTitle.setText("Usefull Link");
+        mBinding.toolbar.tvTitle.setText("Add News");
         mBinding.toolbar.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,12 +173,49 @@ public class AddNewsActivity extends AppCompatActivity {
                 if (mBinding.edtTitle.getText().toString().equalsIgnoreCase("")) {
                     Utils.showDialog(mContext, "Please enter title");
                 } else if (mBinding.edtNewsDetail.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(mContext, "Please enter your Usefull Link");
+                    Utils.showDialog(mContext, "Please enter news description.");
                 } else {
-                    update(linkId);
+                    File file = new File(SELECTED_PATH);
+                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("news_image", file.getName(), requestFile);
+                    if (SELECTED_PATH.equals("")) {
+                        UpdateProfileWithoutImage(mBinding.edtTitle.getText().toString(), mBinding.edtNewsDetail.getText().toString());
+                    } else {
+                        UpdateProfile(mBinding.edtTitle.getText().toString(), mBinding.edtNewsDetail.getText().toString(), body);
+                    }
+//                    update(linkId);
                 }
             }
         });
+    }
+
+    private void UpdateProfile(String title, String content, MultipartBody.Part body) {
+        if (isInternetAvailable(mContext)) {
+            ProgressHUD mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
+            WebApiClient.getInstance().UpdateNewsWithImg(title, content, linkId, body).enqueue(new Callback<AddNewsModel>() {
+                @Override
+                public void onResponse(Call<AddNewsModel> call, Response<AddNewsModel> response) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    if (response.code() == 200) {
+                        Log.e("response", response.body() + "");
+                        assert response.body() != null;
+                        if (response.body().message.equalsIgnoreCase("success")) {
+                            onBackPressed();
+                        } else {
+                            Utils.showDialog(mContext, response.body().message + "");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddNewsModel> call, Throwable t) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("error", t.getMessage());
+                }
+            });
+        } else {
+            Utils.showDialog(mContext, "Check Your Internet.");
+        }
     }
 
     private void editProfile(String title, String content, MultipartBody.Part body) {
@@ -213,6 +225,36 @@ public class AddNewsActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<AddNewsModel> call, Response<AddNewsModel> response) {
                     mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    if (response.code() == 200) {
+                        Log.e("response", response.body() + "");
+                        assert response.body() != null;
+                        if (response.body().message.equalsIgnoreCase("success")) {
+                            onBackPressed();
+                        } else {
+                            Utils.showDialog(mContext, response.body().message + "");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AddNewsModel> call, Throwable t) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("error", t.getMessage());
+                }
+            });
+        } else {
+            Utils.showDialog(mContext, "Check Your Internet.");
+        }
+    }
+
+    private void UpdateProfileWithoutImage(String title, String content) {
+        if (isInternetAvailable(mContext)) {
+            ProgressHUD mProgressHUD = ProgressHUD.show(mContext, true, true, false, null);
+            WebApiClient.getInstance().UpdateNewsWithoutImg(paramUpdateWithoutImage(title, content)).enqueue(new Callback<AddNewsModel>() {
+                @Override
+                public void onResponse(Call<AddNewsModel> call, Response<AddNewsModel> response) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("Response :", response.message() + "");
                     if (response.code() == 200) {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
@@ -269,6 +311,14 @@ public class AddNewsActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<>();
         params.put("content", content);
         params.put("title", title);
+        return params;
+    }
+
+    private Map<String, String> paramUpdateWithoutImage(String title, String content) {
+        Map<String, String> params = new HashMap<>();
+        params.put("content", content);
+        params.put("title", title);
+        params.put("news_id", linkId);
         return params;
     }
 

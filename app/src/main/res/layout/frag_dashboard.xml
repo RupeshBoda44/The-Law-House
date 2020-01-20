@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:background="@drawable/home_bg"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:adjustViewBounds="true"
+                    android:padding="10dp"
+                    android:src="@drawable/logo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llCase"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_calender"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="Case"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAppointment"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_appointment"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="Appointment"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llServices"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_services"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="Services"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llPhoneBook"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_phonebook"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="@string/phone_book"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llBroadcast"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_broadcast"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="@string/broadcast"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLogout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_logout"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="Logout"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llApproveList"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_aaprove_list"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="Approve List"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNews"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_news_a"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="7dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/font_regular"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="News"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_two"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

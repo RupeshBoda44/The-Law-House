@@ -15,6 +15,8 @@ import com.thelawhouse.ClickListener.RecyclerViewClickListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.AppointmentListModel;
 import com.thelawhouse.R;
+import com.thelawhouse.Utils.Constants;
+import com.thelawhouse.Utils.PreferenceHelper;
 import com.thelawhouse.databinding.AdapterAppointmentListBinding;
 
 import java.util.ArrayList;
@@ -32,10 +34,12 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mClickListener = mClickListeneR;
         mClickListener2 = mClickListeneR2;
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AdapterAppointmentListBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.adapter_appointment_list, parent, false);
@@ -61,6 +65,17 @@ public class AppointmentListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             mViewHolder.mBinding.tvStatus.setTextColor(mContext.getResources().getColor(R.color.green));
             mViewHolder.mBinding.tvStatus.setText("Completed");
         }
+        if (PreferenceHelper.getString(Constants.LOGINTYPE, "").equalsIgnoreCase("guest")) {
+            mViewHolder.mBinding.ivMenubar.setVisibility(View.GONE);
+        }
+        mViewHolder.mBinding.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (PreferenceHelper.getString(Constants.LOGINTYPE, "").equalsIgnoreCase("guest")) {
+                    mClickListener.ImageViewListClicked(mdata.appointment_id);
+                }
+            }
+        });
         mViewHolder.mBinding.ivMenubar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

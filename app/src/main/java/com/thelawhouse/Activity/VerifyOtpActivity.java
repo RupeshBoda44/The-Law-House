@@ -40,6 +40,9 @@ public class VerifyOtpActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             type = bundle.getString("register");
+            if (type.equalsIgnoreCase("loginAdmin")) {
+                resendOtpAdmin();
+            }
         }
         onClickListener();
     }
@@ -59,6 +62,8 @@ public class VerifyOtpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (type.equalsIgnoreCase("register")) {
                     resendOtpAdmin();
+                } else if (type.equalsIgnoreCase("loginAdmin")) {
+                    resendOtpAdmin();
                 } else {
                     resendOtp();
                 }
@@ -73,6 +78,8 @@ public class VerifyOtpActivity extends AppCompatActivity {
                     if (getIntent().getExtras().getString("class").equalsIgnoreCase("ForgotPwd"))
                         submitForgotOTP();
                     else if (type.equalsIgnoreCase("register"))
+                        submitOTPAdmin();
+                    else if (type.equalsIgnoreCase("loginAdmin"))
                         submitOTPAdmin();
                     else
                         submitOTP();

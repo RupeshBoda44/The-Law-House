@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.rilixtech.widget.countrycodepicker.Country;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
@@ -43,7 +44,6 @@ import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 
 public class FragAddNewCase extends Fragment implements View.OnClickListener {
     private FragAddNewCaseBinding mBinding;
-    FragAddNewCase mFragment;
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
     private String click = "";
@@ -51,6 +51,29 @@ public class FragAddNewCase extends Fragment implements View.OnClickListener {
     private String countryCodeW = "";
     private String caseId = "";
     MainActivity mainActivity;
+    FragCase fragCase;
+    boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static FragAddNewCase newInstance() {
+        return new FragAddNewCase();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,23 +81,26 @@ public class FragAddNewCase extends Fragment implements View.OnClickListener {
         Typeface typeFace = ResourcesCompat.getFont(getActivity(), R.font.font_regular);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
-        mBinding.ccpCountryCode.setTypeFace(typeFace);
-        mBinding.ccpCountryCodeW.setTypeFace(typeFace);
-        countryCode = mBinding.ccpCountryCode.getSelectedCountryCode();
-        countryCodeW = mBinding.ccpCountryCodeW.getSelectedCountryCode();
-        dateSelection();
-        onClickListener();
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            caseId = bundle.getString("caseId");
-            caseData(caseId);
-            mBinding.llSubmit.setVisibility(View.GONE);
-            mBinding.llUpdate.setVisibility(View.VISIBLE);
-            mainActivity.editCase();
-        } else {
-            mBinding.llSubmit.setVisibility(View.VISIBLE);
-            mBinding.llUpdate.setVisibility(View.GONE);
-            mainActivity.addCase();
+        if (isVisible) {
+            fragCase = FragCase.newInstance();
+            mBinding.ccpCountryCode.setTypeFace(typeFace);
+            mBinding.ccpCountryCodeW.setTypeFace(typeFace);
+            countryCode = mBinding.ccpCountryCode.getSelectedCountryCode();
+            countryCodeW = mBinding.ccpCountryCodeW.getSelectedCountryCode();
+            dateSelection();
+            onClickListener();
+            Bundle bundle = this.getArguments();
+            if (bundle != null) {
+                caseId = bundle.getString("caseId");
+                caseData(caseId);
+                mBinding.llSubmit.setVisibility(View.GONE);
+                mBinding.llUpdate.setVisibility(View.VISIBLE);
+                mainActivity.editCase();
+            } else {
+                mBinding.llSubmit.setVisibility(View.VISIBLE);
+                mBinding.llUpdate.setVisibility(View.GONE);
+//            mainActivity.addCase();
+            }
         }
         return mBinding.getRoot();
     }
@@ -306,7 +332,23 @@ public class FragAddNewCase extends Fragment implements View.OnClickListener {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            mainActivity.selectFirstItemAsDefault();
+                            mBinding.tvLastDate.setText("");
+                            mBinding.tvNextDate.setText("");
+                            mBinding.edtCaseNo.setText("");
+                            mBinding.edtCourtNo.setText("");
+                            mBinding.edtCourt.setText("");
+                            mBinding.edtPartyName1.setText("");
+                            mBinding.edtAdvocateParty1.setText("");
+                            mBinding.edtPartyName2.setText("");
+                            mBinding.edtAdvocateParty2.setText("");
+                            mBinding.edtStages.setText("");
+                            mBinding.edtMobileNo.setText("");
+                            mBinding.edtWhatsAppMobileNo.setText("");
+                            mBinding.edtEmail.setText("");
+//                            mainActivity.selectFirstItemAsDefault();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            Fragment fragment = new FragCase();
+                            fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
                         } else {
                             Utils.showDialog(getActivity(), response.body().message + "");
                         }

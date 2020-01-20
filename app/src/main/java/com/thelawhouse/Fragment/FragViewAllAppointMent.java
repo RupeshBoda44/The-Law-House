@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.thelawhouse.Activity.EditAppoinmentActivity;
 import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.AppointmentListAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
@@ -37,6 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 
 public class FragViewAllAppointMent extends Fragment implements View.OnClickListener {
@@ -46,6 +49,26 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
     private boolean isLastPage = false;
     private AppointmentListAdapter mAdapter;
     MainActivity mainActivity;
+    boolean isVisible = false;
+    private boolean one = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+                one = false;
+            }
+        }
+    }
 
     public static FragViewAllAppointMent newInstance() {
         return new FragViewAllAppointMent();
@@ -60,9 +83,13 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
             @Override
             public void onRefresh() {
                 mBinding.swipeRefresh.setRefreshing(false);
+                one = false;
                 setData();
             }
         });
+        if (isVisible) {
+            setData();
+        }
         return mBinding.getRoot();
     }
 
@@ -76,7 +103,9 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String id) {
-                        mainActivity.changeFragment(id);
+                        Intent intent = new Intent(getActivity(), EditAppoinmentActivity.class);
+                        intent.putExtra("appointmentId", id);
+                        startActivityForResult(intent, 101);
                     }
                 },
                 new RecyclerViewClickListener2() {
@@ -111,7 +140,10 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
                 return isLoading;
             }
         });
-        loadData(page);
+        if (one == false) {
+            one = true;
+            loadData(page);
+        }
     }
 
     private void changeAppointmentStatus(String id) {
@@ -186,6 +218,9 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             AppointmentListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvAllAppointment.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -224,7 +259,7 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-        setData();
+//        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -237,6 +272,23 @@ public class FragViewAllAppointMent extends Fragment implements View.OnClickList
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101) {
+            if (resultCode == RESULT_OK)
+                if (getFragmentManager() != null) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .detach(this)
+                            .attach(this)
+                            .commit();
+                    isVisible = true;
+                    one = false;
+                }
+        }
     }
 
     public void onBackPressed() {

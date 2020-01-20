@@ -1,7 +1,6 @@
 package com.thelawhouse.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -13,8 +12,8 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.thelawhouse.Activity.AddUsefullLinkActivity;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.UsefullLinkListModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.Constants;
@@ -28,16 +27,21 @@ public class AllUsefullLinkAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List<UsefullLinkListModel.Use_full_link_data> caseList_data = new ArrayList<>();
     private Context mContext;
     private RecyclerViewClickListener mClickListener;
+    private RecyclerViewClickListener2 mClickListener2;
 
-    public AllUsefullLinkAdapter(Context context, RecyclerViewClickListener mClickListeneR) {
+    public AllUsefullLinkAdapter(List<UsefullLinkListModel.Use_full_link_data> caseList_data, Context context, RecyclerViewClickListener mClickListeneR,
+                                 RecyclerViewClickListener2 mClickListener2) {
         this.mContext = context;
-        caseList_data = new ArrayList<>();
+        this.caseList_data = caseList_data;
         mClickListener = mClickListeneR;
+        this.mClickListener2 = mClickListener2;
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         AdapterAllUsefullLinkBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.adapter_all_usefull_link, parent, false);
@@ -67,9 +71,8 @@ public class AllUsefullLinkAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 //                            Intent viewIntent = new Intent("android.intent.action.VIEW",
 //                                    Uri.parse("https://api.whatsapp.com/send?phone=" + mViewHolder.mBinding.tvWhatsappNumber.getText().toString()));
 //                            mContext.startActivity(viewIntent);
-                            Intent intent = new Intent(mContext, AddUsefullLinkActivity.class);
-                            intent.putExtra("linkId", mdata.use_full_link_id);
-                            mContext.startActivity(intent);
+                            mClickListener2.ImageViewListClicked(mdata.use_full_link_id);
+
                         } else {
                             caseList_data.remove(position);
                             notifyItemRemoved(position);

@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.thelawhouse.Fragment.FragCompletedAppointment;
 import com.thelawhouse.Fragment.FragTodayAppointment;
 import com.thelawhouse.Fragment.FragViewAllAppointMent;
+import com.thelawhouse.Fragment.GFragCompletedAppointment;
+import com.thelawhouse.Fragment.GFragViewAllAppointMent;
 
 import java.util.ArrayList;
 import java.util.List;

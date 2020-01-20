@@ -15,6 +15,7 @@ import android.widget.TimePicker;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.rilixtech.widget.countrycodepicker.Country;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
@@ -50,30 +51,52 @@ public class FragAddAppointment extends Fragment {
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
     private String appointmentId = "";
+    boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static FragAddAppointment newInstance() {
+        return new FragAddAppointment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_add_appointment, container, false);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
-        Typeface typeFace = ResourcesCompat.getFont(getActivity(), R.font.font_regular);
-        mBinding.ccpCountryCode.setTypeFace(typeFace);
-        countryCode = mBinding.ccpCountryCode.getSelectedCountryCode();
-        onClickListener();
-        dateSelection();
-        timeSelection();
+        if (isVisible) {
+            Typeface typeFace = ResourcesCompat.getFont(getActivity(), R.font.font_regular);
+            mBinding.ccpCountryCode.setTypeFace(typeFace);
+            countryCode = mBinding.ccpCountryCode.getSelectedCountryCode();
+            onClickListener();
+            dateSelection();
+            timeSelection();
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            appointmentId = bundle.getString("appointmentId");
-            appointmentData(appointmentId);
-            mBinding.llSubmit.setVisibility(View.GONE);
-            mBinding.llUpdate.setVisibility(View.VISIBLE);
-            mainActivity.editAppointment();
-        } else {
-            mBinding.llSubmit.setVisibility(View.VISIBLE);
-            mBinding.llUpdate.setVisibility(View.GONE);
-            mainActivity.addAppointment();
+            Bundle bundle = this.getArguments();
+            if (bundle != null) {
+                appointmentId = bundle.getString("appointmentId");
+                appointmentData(appointmentId);
+                mBinding.llSubmit.setVisibility(View.GONE);
+                mBinding.llUpdate.setVisibility(View.VISIBLE);
+                mainActivity.editAppointment();
+            } else {
+                mBinding.llSubmit.setVisibility(View.VISIBLE);
+                mBinding.llUpdate.setVisibility(View.GONE);
+                mainActivity.addAppointment();
+            }
         }
         return mBinding.getRoot();
     }
@@ -292,8 +315,16 @@ public class FragAddAppointment extends Fragment {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            mainActivity.viewAppointment();
-
+                            mBinding.edtFullName.setText("");
+                            mBinding.edtEmail.setText("");
+                            mBinding.edtMobileNo.setText("");
+                            mBinding.edtReason.setText("");
+                            mBinding.tvDate.setText("");
+                            mBinding.tvTime.setText("");
+                            mBinding.ccpCountryCode.resetToDefaultCountry();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            Fragment fragment = new FragAppointment();
+                            fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
                         } else {
                             Utils.showDialog(getActivity(), response.body().message + "");
                         }
@@ -328,7 +359,7 @@ public class FragAddAppointment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        params.put("user_type", "admin");
         params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
         params.put("name", mBinding.edtFullName.getText().toString());
         params.put("mobile", mBinding.edtMobileNo.getText().toString());
@@ -352,7 +383,7 @@ public class FragAddAppointment extends Fragment {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            mainActivity.viewAppointment();
+//                            mainActivity.viewAppointment();
                         } else {
                             Utils.showDialog(getActivity(), response.body().message + "");
                         }
@@ -387,6 +418,7 @@ public class FragAddAppointment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        params.put("user_type", "admin");
         params.put("appointment_id", appointmentId);
         params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
         params.put("name", mBinding.edtFullName.getText().toString());

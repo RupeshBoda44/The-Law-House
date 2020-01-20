@@ -11,6 +11,8 @@ public class NewsListModel {
     public String message;
     @SerializedName("total_pages")
     public String total_pages;
+    @SerializedName("news_image_url")
+    public String news_image_url;
     @SerializedName("news_data")
     public List<News_data> news_data;
 

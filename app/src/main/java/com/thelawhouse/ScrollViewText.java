@@ -1,8 +1,5 @@
 package com.thelawhouse;
 
-
-/*** Jorgesys**/
-
 import android.content.Context;
 import android.graphics.Rect;
 import android.text.TextPaint;
@@ -11,7 +8,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Scroller;
 
 import androidx.appcompat.widget.AppCompatTextView;
-
 
 public class ScrollViewText extends AppCompatTextView {
 
@@ -62,7 +58,7 @@ public class ScrollViewText extends AppCompatTextView {
         setScroller(mScroller);
         int scrollingLen = calculateScrollingLen();
         int distance = scrollingLen - (getWidth() + mXPaused);
-        int duration = (new Double(mRoundDuration * distance * 1.00000/scrollingLen)).intValue();
+        int duration = (new Double(mRoundDuration * distance * 1.00000 / scrollingLen)).intValue();
         setVisibility(VISIBLE);
         mScroller.startScroll(mXPaused, 0, distance, 0, duration);
         invalidate();

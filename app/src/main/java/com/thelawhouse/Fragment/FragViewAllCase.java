@@ -171,6 +171,9 @@ public class FragViewAllCase extends Fragment implements View.OnClickListener {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             CaseListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        }else {
+                            mBinding.rvAllCase.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }

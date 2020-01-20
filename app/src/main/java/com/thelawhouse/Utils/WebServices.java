@@ -1,5 +1,6 @@
 package com.thelawhouse.Utils;
 
+import com.thelawhouse.Model.AboutUsModel;
 import com.thelawhouse.Model.AddAppointmentModel;
 import com.thelawhouse.Model.AddNewsModel;
 import com.thelawhouse.Model.AddSegementLawModel;
@@ -7,6 +8,8 @@ import com.thelawhouse.Model.AddUsefullLinkModel;
 import com.thelawhouse.Model.AdminListModel;
 import com.thelawhouse.Model.AppointmentListModel;
 import com.thelawhouse.Model.BroadcastMessageModel;
+import com.thelawhouse.Model.BroadcastModel;
+import com.thelawhouse.Model.BrodcastDetailModel;
 import com.thelawhouse.Model.CaseListModel;
 import com.thelawhouse.Model.CompletedAppointmentListModel;
 import com.thelawhouse.Model.DateCountModel;
@@ -14,6 +17,8 @@ import com.thelawhouse.Model.LoginModel;
 import com.thelawhouse.Model.NewCaseModel;
 import com.thelawhouse.Model.NewMemberModel;
 import com.thelawhouse.Model.NewsListModel;
+import com.thelawhouse.Model.NewsListTodayModel;
+import com.thelawhouse.Model.NotificationModel;
 import com.thelawhouse.Model.PhonebookModel;
 import com.thelawhouse.Model.RegisterModel;
 import com.thelawhouse.Model.SegmentLawListModel;
@@ -81,6 +86,14 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=get_appointment_list")
     Call<AppointmentListModel> AppointMentList(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_client_appointment")
+    Call<AppointmentListModel> ClientAppointMentList(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_client_appointment")
+    Call<CompletedAppointmentListModel> CommpletedClientAppointMentList(@FieldMap Map<String, String> Map);
 
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=get_complate_appointment_list")
@@ -170,12 +183,26 @@ public interface WebServices {
     @POST("the_law_house_apis.php?action=add_news")
     Call<AddNewsModel> AddNewsWithoutImg(@FieldMap Map<String, String> Map);
 
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_news_details")
+    Call<NewsListModel> NewsDetail(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=update_news")
+    Call<AddNewsModel> UpdateNewsWithoutImg(@FieldMap Map<String, String> Map);
+
     @Multipart
     @POST("the_law_house_apis.php?action=add_news")
     Call<AddNewsModel> AddNewsWithImg(@Query("title") String title,
                                       @Query("content") String content,
                                       @Part MultipartBody.Part file);
 
+    @Multipart
+    @POST("the_law_house_apis.php?action=update_news")
+    Call<AddNewsModel> UpdateNewsWithImg(@Query("title") String title,
+                                         @Query("content") String content,
+                                         @Query("news_id") String news_id,
+                                         @Part MultipartBody.Part file);
 
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=verify_otp")
@@ -217,9 +244,27 @@ public interface WebServices {
     @POST("the_law_house_apis.php?action=get_all_news")
     Call<NewsListModel> NewsList(@FieldMap Map<String, String> Map);
 
+    @POST("the_law_house_apis.php?action=get_today_news")
+    Call<NewsListTodayModel> NewsListToday();
+
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=get_date_case_list")
     Call<CaseListModel> FindCaseByDate(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_broadcast_details")
+    Call<BrodcastDetailModel> BroadcastDetails(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=update_broadcast")
+    Call<BroadcastModel> UpdateBroadcastDetails(@FieldMap Map<String, String> Map);
+
+    @POST("the_law_house_apis.php?action=about_us")
+    Call<AboutUsModel> AboutUsDetails();
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_broadcast_details")
+    Call<BrodcastDetailModel> UpdateBroadcast(@FieldMap Map<String, String> Map);
 
 
     @FormUrlEncoded
@@ -229,4 +274,12 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("the_law_house_apis.php?action=find_case_by_mobile")
     Call<CaseListModel> FindCaseByMobile(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=get_my_notification")
+    Call<NotificationModel> NotificationList(@FieldMap Map<String, String> Map);
+
+    @FormUrlEncoded
+    @POST("the_law_house_apis.php?action=update_read_notification")
+    Call<VerifyModel> NotificationStatus(@FieldMap Map<String, String> Map);
 }

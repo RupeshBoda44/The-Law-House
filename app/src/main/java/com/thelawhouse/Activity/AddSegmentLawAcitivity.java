@@ -1,5 +1,6 @@
 package com.thelawhouse.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -166,7 +167,9 @@ public class AddSegmentLawAcitivity extends AppCompatActivity {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            onBackPressed();
+                            Intent intent = new Intent();
+                            setResult(102, intent);
+                            finish();
                         } else {
                             Utils.showDialog(mContext, response.body().message + "");
                         }
@@ -196,7 +199,9 @@ public class AddSegmentLawAcitivity extends AppCompatActivity {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            onBackPressed();
+                            Intent intent = new Intent();
+                            setResult(103, intent);
+                            finish();
                         } else {
                             Utils.showDialog(mContext, response.body().message + "");
                         }

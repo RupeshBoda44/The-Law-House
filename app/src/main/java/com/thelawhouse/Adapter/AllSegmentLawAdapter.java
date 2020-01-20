@@ -1,5 +1,6 @@
 package com.thelawhouse.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.SpannableString;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thelawhouse.Activity.AddSegmentLawAcitivity;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.SegmentLawListModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.Constants;
@@ -27,11 +29,14 @@ public class AllSegmentLawAdapter extends RecyclerView.Adapter<RecyclerView.View
     private List<SegmentLawListModel.Segment_of_law_data> caseList_data = new ArrayList<>();
     private Context mContext;
     private RecyclerViewClickListener mClickListener;
+    private RecyclerViewClickListener2 mClickListener2;
 
-    public AllSegmentLawAdapter(Context context, RecyclerViewClickListener mClickListeneR) {
+    public AllSegmentLawAdapter(List<SegmentLawListModel.Segment_of_law_data> caseList_data,Context context, RecyclerViewClickListener mClickListeneR,
+                                RecyclerViewClickListener2 mClickListener2) {
         this.mContext = context;
-        caseList_data = new ArrayList<>();
+        this.caseList_data = new ArrayList<>();
         mClickListener = mClickListeneR;
+        this.mClickListener2 = mClickListener2;
     }
 
     @Override
@@ -59,9 +64,7 @@ public class AllSegmentLawAdapter extends RecyclerView.Adapter<RecyclerView.View
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == 1) {
-                            Intent intent = new Intent(mContext, AddSegmentLawAcitivity.class);
-                            intent.putExtra("linkId", mdata.segment_id);
-                            mContext.startActivity(intent);
+                            mClickListener2.ImageViewListClicked(mdata.segment_id);
                         } else {
                             caseList_data.remove(position);
                             notifyItemRemoved(position);
@@ -80,10 +83,12 @@ public class AllSegmentLawAdapter extends RecyclerView.Adapter<RecyclerView.View
         SpannableString sb = new SpannableString(title);
         return sb;
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public int getItemCount() {
         return caseList_data.size();

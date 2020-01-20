@@ -259,7 +259,7 @@ public class RobotoCalendarView extends LinearLayout {
 
         // Mark current day as selected
         ViewGroup dayOfTheMonthBackground = getDayOfMonthBackground(calendar);
-        dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle);
+        dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle_two);
 
         TextView dayOfTheMonth = getDayOfMonthText(calendar);
         dayOfTheMonth.setTextColor(ContextCompat.getColor(getContext(), R.color.roboto_calendar_selected_day_font));
@@ -268,7 +268,7 @@ public class RobotoCalendarView extends LinearLayout {
         ImageView circleImage2 = getCircleImage2(calendar);
         if (circleImage1.getVisibility() == VISIBLE) {
 //            DrawableCompat.setTint(circleImage1.getDrawable(), ContextCompat.getColor(getContext(), R.color.roboto_calendar_selected_day_font));
-            dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle);
+            dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle_two);
         } else {
 //            dayOfTheMonthBackground.setBackgroundResource(R.drawable.ring);
         }
@@ -299,7 +299,7 @@ public class RobotoCalendarView extends LinearLayout {
             if (circleImage1.getVisibility() == VISIBLE) {
 //                DrawableCompat.setTint(circleImage1.getDrawable(), ContextCompat.getColor(getContext(), R.color.roboto_calendar_circle_1));
                 dayOfTheMonth.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor));
-                dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle);
+                dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle_two);
             }
 
             if (circleImage2.getVisibility() == VISIBLE) {
@@ -320,7 +320,7 @@ public class RobotoCalendarView extends LinearLayout {
         ViewGroup dayOfTheMonthBackground = getDayOfMonthBackground(lastSelectedDayCalendar);
         TextView dayOfTheMonth = getDayOfMonthText(lastSelectedDayCalendar);
 //        ViewGroup dayOfTheMonthBackground = getDayOfMonthBackground(lastSelectedDayCalendar);
-        dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle);
+        dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle_two);
         ImageView circleImage1 = getCircleImage1(calendar);
         circleImage1.setVisibility(View.VISIBLE);
         if (lastSelectedDayCalendar != null && areInTheSameDay(calendar, lastSelectedDayCalendar)) {
@@ -329,7 +329,7 @@ public class RobotoCalendarView extends LinearLayout {
         } else {
 //            DrawableCompat.setTint(circleImage1.getDrawable(), ContextCompat.getColor(getContext(), R.color.roboto_calendar_circle_1));
 //            dayOfTheMonthBackground.setBackgroundResource(R.drawable.ring);
-            dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle);
+            dayOfTheMonthBackground.setBackgroundResource(R.drawable.circle_two);
         }
     }
 
@@ -401,7 +401,7 @@ public class RobotoCalendarView extends LinearLayout {
         dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length());
         Calendar calendar = Calendar.getInstance();
         if (currentCalendar.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
-            dateTitle.setText(dateText);
+            dateTitle.setText(String.format("%s %s", dateText,currentCalendar.get(Calendar.YEAR)));
         } else {
             dateTitle.setText(String.format("%s %s", dateText, currentCalendar.get(Calendar.YEAR)));
         }

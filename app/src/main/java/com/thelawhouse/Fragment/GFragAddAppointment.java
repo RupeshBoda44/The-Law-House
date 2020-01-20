@@ -15,10 +15,11 @@ import android.widget.TimePicker;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.rilixtech.widget.countrycodepicker.Country;
 import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
-import com.thelawhouse.Activity.MainActivity;
+import com.thelawhouse.Activity.GMainActivity;
 import com.thelawhouse.Model.AddAppointmentModel;
 import com.thelawhouse.Model.TodayAppointmentListModel;
 import com.thelawhouse.R;
@@ -46,15 +47,35 @@ import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 public class GFragAddAppointment extends Fragment {
     private FragAddAppointmentBinding mBinding;
     private String countryCode = "";
-    private MainActivity mainActivity;
+    private GMainActivity mainActivity;
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
     private String appointmentId = "";
+    boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static GFragAddAppointment newInstance() {
+        return new GFragAddAppointment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_add_appointment, container, false);
-        mainActivity = (MainActivity) getActivity();
+        mainActivity = (GMainActivity) getActivity();
         mainActivity.ClickcableTrue();
         Typeface typeFace = ResourcesCompat.getFont(getActivity(), R.font.font_regular);
         mBinding.ccpCountryCode.setTypeFace(typeFace);
@@ -68,7 +89,7 @@ public class GFragAddAppointment extends Fragment {
             appointmentId = bundle.getString("appointmentId");
             appointmentData(appointmentId);
             mBinding.llSubmit.setVisibility(View.GONE);
-            mBinding.llUpdate.setVisibility(View.VISIBLE);
+            mBinding.llUpdate.setVisibility(View.GONE);
             mainActivity.editAppointment();
         } else {
             mBinding.llSubmit.setVisibility(View.VISIBLE);
@@ -113,6 +134,15 @@ public class GFragAddAppointment extends Fragment {
                             mBinding.tvDate.setText(finalNectDate);
                             mBinding.tvTime.setText(response.body().appointment_data.get(0).appointment_time);
                             mBinding.ccpCountryCode.setCountryForPhoneCode(Integer.parseInt(response.body().appointment_data.get(0).c_code));
+                            mBinding.edtFullName.setEnabled(false);
+                            mBinding.edtEmail.setEnabled(false);
+                            mBinding.edtMobileNo.setEnabled(false);
+                            mBinding.edtReason.setEnabled(false);
+                            mBinding.edtEmail.setEnabled(false);
+                            mBinding.tvDate.setClickable(false);
+                            mBinding.tvTime.setClickable(false);
+                            mBinding.ccpCountryCode.setClickable(false);
+
                         } else {
                             Utils.showDialog(getActivity(), response.body().message + "");
                         }
@@ -254,30 +284,6 @@ public class GFragAddAppointment extends Fragment {
                 }
             }
         });
-        mBinding.tvUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                if (mBinding.edtFullName.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Name");
-                } else if (!mBinding.edtEmail.getText().toString().matches(emailPattern)) {
-                    Utils.showDialog(getActivity(), "Please Enter valid Email Address");
-                } else if (mBinding.edtMobileNo.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Mobile Number");
-                } else if (mBinding.edtMobileNo.getText().toString().length() < 10) {
-                    Utils.showDialog(getActivity(), "Please Enter Valid Mobile Number");
-                } else if (mBinding.edtReason.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Reason");
-                } else if (mBinding.tvDate.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Date");
-                } else if (mBinding.tvTime.getText().toString().equalsIgnoreCase("")) {
-                    Utils.showDialog(getActivity(), "Please Enter Time");
-                } else {
-                    updateMember();
-                }
-            }
-        });
-
     }
 
     private void submitNewMember() {
@@ -292,8 +298,17 @@ public class GFragAddAppointment extends Fragment {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            mainActivity.viewAppointment();
-
+//                            mainActivity.viewAppointment();
+                            mBinding.edtFullName.setText("");
+                            mBinding.edtEmail.setText("");
+                            mBinding.edtMobileNo.setText("");
+                            mBinding.edtReason.setText("");
+                            mBinding.tvDate.setText("");
+                            mBinding.tvTime.setText("");
+                            mBinding.ccpCountryCode.resetToDefaultCountry();
+                            FragmentManager fragmentManager = getFragmentManager();
+                            Fragment fragment = new GFragAppointment();
+                            fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
                         } else {
                             Utils.showDialog(getActivity(), response.body().message + "");
                         }
@@ -336,68 +351,11 @@ public class GFragAddAppointment extends Fragment {
         params.put("email", mBinding.edtEmail.getText().toString());
         params.put("appointment_reason", mBinding.edtReason.getText().toString());
         params.put("appointment_date", finalNectDate);
+        params.put("user_type", "client");
         params.put("appointment_time", mBinding.tvTime.getText().toString());
         return params;
     }
 
-    private void updateMember() {
-        if (isInternetAvailable(getActivity())) {
-            ProgressHUD mProgressHUD = ProgressHUD.show(getActivity(), true, true, false, null);
-            WebApiClient.getInstance().UpdateAppointment(paramUpdateMember()).enqueue(new Callback<AddAppointmentModel>() {
-                @Override
-                public void onResponse(Call<AddAppointmentModel> call, Response<AddAppointmentModel> response) {
-                    mProgressHUD.dismissProgressDialog(mProgressHUD);
-                    Log.e("Response :", response.message() + "");
-                    if (response.code() == 200) {
-                        Log.e("response", response.body() + "");
-                        assert response.body() != null;
-                        if (response.body().message.equalsIgnoreCase("success")) {
-                            mainActivity.viewAppointment();
-                        } else {
-                            Utils.showDialog(getActivity(), response.body().message + "");
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<AddAppointmentModel> call, Throwable t) {
-                    mProgressHUD.dismissProgressDialog(mProgressHUD);
-                    Log.e("error", t.getMessage());
-                }
-            });
-        } else {
-            Utils.showDialog(getActivity(), "Check Your Internet.");
-        }
-    }
-
-    private Map<String, String> paramUpdateMember() {
-        Map<String, String> params = new HashMap<>();
-        String nextDate = mBinding.tvDate.getText().toString();
-        String inputPattern = "dd-MM-yyyy";
-        String outputPattern = "yyyy-MM-dd";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
-        Date date;
-        String finalNectDate = null;
-
-        try {
-            date = inputFormat.parse(nextDate);
-            finalNectDate = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        params.put("appointment_id", appointmentId);
-        params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
-        params.put("name", mBinding.edtFullName.getText().toString());
-        params.put("mobile", mBinding.edtMobileNo.getText().toString());
-        params.put("c_code", countryCode);
-        params.put("email", mBinding.edtEmail.getText().toString());
-        params.put("appointment_reason", mBinding.edtReason.getText().toString());
-        params.put("appointment_date", finalNectDate);
-        params.put("appointment_time", mBinding.tvTime.getText().toString());
-        return params;
-    }
 
     @Override
     public void onResume() {

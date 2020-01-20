@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.thelawhouse.Activity.ForgotPWDActivity;
 import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Activity.RegistrationAdminActivity;
+import com.thelawhouse.Activity.VerifyOtpActivity;
 import com.thelawhouse.Model.LoginModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.Constants;
@@ -102,23 +104,41 @@ public class EmployeeFragment extends Fragment {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            if (response.body().user.status.equalsIgnoreCase("active")) {
-                                PreferenceHelper.putBoolean(Constants.IS_LOGIN, true);
-                                PreferenceHelper.putString(Constants.USER_ID, response.body().user.user_id);
-                                PreferenceHelper.putString(Constants.NAME, response.body().user.name);
-                                PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().user.mobile_number);
-                                PreferenceHelper.putString(Constants.EMAIL, response.body().user.email);
-                                PreferenceHelper.putString(Constants.PASSWORD, response.body().user.password);
-                                PreferenceHelper.putString(Constants.ORIGANAL_PASSWORD, response.body().user.origanal_password);
-                                PreferenceHelper.putString(Constants.CREATED_DATE, response.body().user.created_date);
-                                PreferenceHelper.putString(Constants.OTP, response.body().user.otp);
-                                PreferenceHelper.putString(Constants.LOGINTYPE, "employee");
-                                PreferenceHelper.putString(Constants.ADMIN_ACCESS, response.body().admin_access);
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Utils.showDialog(getActivity(), "Your account is not activated yet.Please wait for confirmation.");
-                            }
+//                            if (response.body().user.status.equalsIgnoreCase("active")) {
+                            PreferenceHelper.putBoolean(Constants.IS_LOGIN, true);
+                            PreferenceHelper.putString(Constants.USER_ID, response.body().user.user_id);
+                            PreferenceHelper.putString(Constants.NAME, response.body().user.name);
+                            PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().user.mobile_number);
+                            PreferenceHelper.putString(Constants.EMAIL, response.body().user.email);
+                            PreferenceHelper.putString(Constants.PASSWORD, response.body().user.password);
+                            PreferenceHelper.putString(Constants.ORIGANAL_PASSWORD, response.body().user.origanal_password);
+                            PreferenceHelper.putString(Constants.CREATED_DATE, response.body().user.created_date);
+                            PreferenceHelper.putString(Constants.OTP, response.body().user.otp);
+                            PreferenceHelper.putString(Constants.LOGINTYPE, "employee");
+                            PreferenceHelper.putString(Constants.ADMIN_ACCESS, response.body().admin_access);
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            startActivity(intent);
+//                            } else {
+//                                Utils.showDialog(getActivity(), "Your account is not activated yet.Please wait for confirmation.");
+//                            }
+                        } else if (response.body().message.equalsIgnoreCase("OTP is not verified")) {
+                            PreferenceHelper.putString(Constants.USER_ID, response.body().user.user_id);
+                            PreferenceHelper.putString(Constants.NAME, response.body().user.name);
+                            PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().user.mobile_number);
+                            PreferenceHelper.putString(Constants.EMAIL, response.body().user.email);
+                            PreferenceHelper.putString(Constants.PASSWORD, response.body().user.password);
+                            PreferenceHelper.putString(Constants.ORIGANAL_PASSWORD, response.body().user.origanal_password);
+                            PreferenceHelper.putString(Constants.CREATED_DATE, response.body().user.created_date);
+                            PreferenceHelper.putString(Constants.OTP, response.body().user.otp);
+                            PreferenceHelper.putString(Constants.LOGINTYPE, "employee");
+                            PreferenceHelper.putString(Constants.ADMIN_ACCESS, response.body().admin_access);
+                            Intent intent = new Intent(getActivity(), VerifyOtpActivity.class);
+                            intent.putExtra("register", "loginAdmin");
+                            startActivity(intent);
+                            Toast.makeText(getActivity(), "OTP is not verified", Toast.LENGTH_SHORT).show();
+//                            Utils.showDialog(getActivity(), response.body().message + "");
+                        } else if (response.body().message.equalsIgnoreCase("Not Active")) {
+                            Utils.showDialog(getActivity(), "Your account is not activated yet.Please wait for confirmation.");
                         } else {
                             Utils.showDialog(getActivity(), response.body().message + "");
                         }

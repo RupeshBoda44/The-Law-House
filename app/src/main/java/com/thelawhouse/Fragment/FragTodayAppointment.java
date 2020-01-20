@@ -1,5 +1,6 @@
 package com.thelawhouse.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -8,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.thelawhouse.Activity.EditAppoinmentActivity;
 import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.TodayAppointmentListAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
@@ -36,6 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 
 public class FragTodayAppointment extends Fragment implements View.OnClickListener {
@@ -45,6 +49,22 @@ public class FragTodayAppointment extends Fragment implements View.OnClickListen
     private boolean isLastPage = false;
     private TodayAppointmentListAdapter mAdapter;
     private MainActivity mainActivity;
+    private boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            if (getFragmentManager() != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
 
     public static FragTodayAppointment newInstance() {
         return new FragTodayAppointment();
@@ -62,6 +82,9 @@ public class FragTodayAppointment extends Fragment implements View.OnClickListen
                 setData();
             }
         });
+        if (isVisible) {
+            setData();
+        }
         return mBinding.getRoot();
     }
 
@@ -75,7 +98,10 @@ public class FragTodayAppointment extends Fragment implements View.OnClickListen
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String id) {
-                        mainActivity.changeFragment(id);
+//                        mainActivity.changeFragment(id);
+                        Intent intent = new Intent(getActivity(), EditAppoinmentActivity.class);
+                        intent.putExtra("appointmentId", id);
+                        startActivityForResult(intent, 102);
                     }
                 },
                 new RecyclerViewClickListener2() {
@@ -137,6 +163,9 @@ public class FragTodayAppointment extends Fragment implements View.OnClickListen
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             TodayAppointmentListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvAllAppointment.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -180,7 +209,6 @@ public class FragTodayAppointment extends Fragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -229,6 +257,22 @@ public class FragTodayAppointment extends Fragment implements View.OnClickListen
         params.put("appointment_id", id);
         params.put("status", "done");
         return params;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 102) {
+            if (resultCode == RESULT_OK)
+                if (getFragmentManager() != null) {
+                    getFragmentManager()
+                            .beginTransaction()
+                            .detach(this)
+                            .attach(this)
+                            .commit();
+                    isVisible = true;
+                }
+        }
     }
 
     public void onBackPressed() {

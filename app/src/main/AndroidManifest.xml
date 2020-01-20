@@ -12,14 +12,31 @@
     <application
         android:name=".Utils.MyApplication"
         android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-        <!-- <provider
+        <activity
+            android:name=".Activity.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.ShowAppoinmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.EditAppoinmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.EditCaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activity.NewsDetailActivity"
+            android:screenOrientation="portrait" />
+        <!--
+         <provider
              android:name="android.support.content.FileProvider"
              android:authorities="${applicationId}.provider"
              android:exported="false"
@@ -27,8 +44,9 @@
              <meta-data
                  android:name="android.support.FILE_PROVIDER_PATHS"
                  android:resource="@xml/provider_paths" />
-         </provider>--> <!-- cache directory file provider paths -->
-
+         </provider>
+        -->
+        <!-- cache directory file provider paths -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

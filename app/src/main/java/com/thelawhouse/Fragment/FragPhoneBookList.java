@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,8 +57,9 @@ public class FragPhoneBookList extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_phonebook_list, container, false);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
+        mainActivity.phoneBookTitle();
         onClickListener();
-//        setData();
+        setData();
         return mBinding.getRoot();
     }
 
@@ -126,7 +125,6 @@ public class FragPhoneBookList extends Fragment {
     }
 
 
-
     private void loadData(int page) {
 
         if (isInternetAvailable(getActivity())) {
@@ -143,6 +141,9 @@ public class FragPhoneBookList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             PhonebookModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvPhoneBookList.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -184,7 +185,6 @@ public class FragPhoneBookList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

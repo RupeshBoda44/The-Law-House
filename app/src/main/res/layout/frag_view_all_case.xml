@@ -10,7 +10,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAllCase"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:overScrollMode="never"
             android:visibility="visible" />
@@ -18,10 +18,31 @@
         <TextView
             android:id="@+id/tvDataNotFound"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="250dp"
             android:fontFamily="@font/font_regular"
             android:gravity="center"
-            android:text="@string/date_not_found"
+            android:text="Dispose Cases not found."
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNewsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvNewsNotFound"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:fontFamily="@font/font_regular"
+            android:gravity="center"
+            android:text="News not found."
             android:textColor="@color/black"
             android:textSize="24dp"
             android:textStyle="bold"

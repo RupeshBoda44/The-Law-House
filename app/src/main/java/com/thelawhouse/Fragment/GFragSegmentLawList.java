@@ -16,6 +16,7 @@ import com.thelawhouse.Activity.GMainActivity;
 import com.thelawhouse.Adapter.AllSegmentLawAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
+import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.SegmentLawListModel;
 import com.thelawhouse.Model.VerifyModel;
 import com.thelawhouse.R;
@@ -24,7 +25,9 @@ import com.thelawhouse.Utils.Utils;
 import com.thelawhouse.Utils.WebApiClient;
 import com.thelawhouse.databinding.FragSagmentLawListBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -40,29 +43,63 @@ public class GFragSegmentLawList extends Fragment {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private AllSegmentLawAdapter mAdapter;
+    private List<SegmentLawListModel.Segment_of_law_data> caseList_data = new ArrayList<>();
+    private boolean one = false;
+    private boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+                one = false;
+            }
+        }
+    }
+
+    public static GFragSegmentLawList newInstance() {
+        return new GFragSegmentLawList();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_sagment_law_list, container, false);
         mainActivity = (GMainActivity) getActivity();
-        mainActivity.ClickcableFalse();
+        mainActivity.ClickcableTrue();
         mBinding.tvAddSegment.setVisibility(View.GONE);
+        if (isVisible) {
+            setData();
+        }
         return mBinding.getRoot();
     }
 
     private void setData() {
+        caseList_data = new ArrayList<>();
         page = 0;
         isLoading = false;
         isLastPage = false;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mBinding.rvSegementLaw.setLayoutManager(linearLayoutManager);
-        mAdapter = new AllSegmentLawAdapter(getActivity(),
+        mAdapter = new AllSegmentLawAdapter(caseList_data, getActivity(),
                 new RecyclerViewClickListener() {
                     @Override
                     public void ImageViewListClicked(String mobileNum) {
                         deleteSagementLaw(mobileNum);
                     }
-                });
+                }, new RecyclerViewClickListener2() {
+            @Override
+            public void ImageViewListClicked(String id) {
+
+            }
+        });
         mBinding.rvSegementLaw.setAdapter(mAdapter);
 
         mBinding.rvSegementLaw.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
@@ -89,7 +126,10 @@ public class GFragSegmentLawList extends Fragment {
                 return isLoading;
             }
         });
-        loadData(page);
+        if (one == false) {
+            one = true;
+            loadData(page);
+        }
     }
 
     private void deleteSagementLaw(String linkId) {
@@ -142,6 +182,9 @@ public class GFragSegmentLawList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             SegmentLawListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvSegementLaw.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -181,7 +224,7 @@ public class GFragSegmentLawList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
+//        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -198,6 +241,6 @@ public class GFragSegmentLawList extends Fragment {
     }
 
     public void onBackPressed() {
-        Utils.onBackPressed(getActivity(), getResources().getString(R.string.exit_dialog_text));
+        mainActivity.selectFirstItemAsDefault();
     }
 }

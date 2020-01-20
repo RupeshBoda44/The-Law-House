@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -25,10 +26,12 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.thelawhouse.Activity.MainActivity;
 import com.thelawhouse.Adapter.CompletedCaseAdapter;
+import com.thelawhouse.Adapter.NewsListTodayAdapter;
 import com.thelawhouse.ClickListener.PaginationScrollListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener;
 import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.CaseListModel;
+import com.thelawhouse.Model.NewsListTodayModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.ProgressHUD;
 import com.thelawhouse.Utils.WebApiClient;
@@ -51,14 +54,80 @@ public class FragUnupdatedCases extends Fragment implements View.OnClickListener
     private boolean isLastPage = false;
     private CompletedCaseAdapter mAdapter;
     MainActivity mainActivity;
+    private boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static FragUnupdatedCases newInstance() {
+        return new FragUnupdatedCases();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_view_all_case, container, false);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
-        setData();
+        if (isVisible)
+            setNews();
         return mBinding.getRoot();
+    }
+
+    private void setNews() {
+        if (isInternetAvailable(getActivity())) {
+            final ProgressHUD mProgressHUD = ProgressHUD.show(getActivity(), true, true, false, null);
+            WebApiClient.getInstance().NewsListToday().enqueue(new Callback<NewsListTodayModel>() {
+                @Override
+                public void onResponse(Call<NewsListTodayModel> call, Response<NewsListTodayModel> response) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    Log.e("Response :", response.message() + "");
+                    assert response.body() != null;
+                    if (response.code() == 200) {
+                        if (response.body().message.equalsIgnoreCase("success")) {
+                            mBinding.rvNewsList.setVisibility(View.VISIBLE);
+                            mBinding.tvDataNotFound.setVisibility(View.GONE);
+                            NewsListTodayModel myBookingModel = response.body();
+                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                            mBinding.rvNewsList.setLayoutManager(layoutManager);
+                            NewsListTodayAdapter completedAdapter = new NewsListTodayAdapter(getActivity(), new RecyclerViewClickListener() {
+                                @Override
+                                public void ImageViewListClicked(String mobileNum) {
+
+                                }
+                            });
+                            mBinding.rvNewsList.setAdapter(completedAdapter);
+                            completedAdapter.addItems(myBookingModel.news_data);
+                        } else {
+                            mBinding.rvNewsList.setVisibility(View.GONE);
+                            mBinding.tvNewsNotFound.setVisibility(View.VISIBLE);
+                        }
+                        setData();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<NewsListTodayModel> call, Throwable t) {
+                    mProgressHUD.dismissProgressDialog(mProgressHUD);
+                    mBinding.rvNewsList.setVisibility(View.GONE);
+                    mBinding.tvNewsNotFound.setVisibility(View.VISIBLE);
+                    Log.e("error", t.getMessage());
+                }
+            });
+        }
     }
 
     private void setData() {
@@ -170,6 +239,9 @@ public class FragUnupdatedCases extends Fragment implements View.OnClickListener
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             CaseListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvAllCase.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }

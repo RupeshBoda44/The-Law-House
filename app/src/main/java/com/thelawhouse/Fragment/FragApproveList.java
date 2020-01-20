@@ -60,8 +60,9 @@ public class FragApproveList extends Fragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_approve_list, container, false);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
+        mainActivity.approveListTitle();
         onClickListener();
-//        setData();
+        setData();
         return mBinding.getRoot();
     }
 
@@ -183,6 +184,9 @@ public class FragApproveList extends Fragment {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             AdminListModel caseListModel = response.body();
                             resultAction(caseListModel);
+                        } else {
+                            mBinding.rvApproveList.setVisibility(View.GONE);
+                            mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -224,7 +228,7 @@ public class FragApproveList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setData();
+//        setData();
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

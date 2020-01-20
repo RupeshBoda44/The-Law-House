@@ -7,8 +7,8 @@
     <color name="roboto_calendar_selected_day_background">#20BEB2</color>
     <color name="roboto_calendar_current_day_ring">#CCCCCC</color>
     <color name="roboto_calendar_day_of_the_month_font">#4F4F4F</color>
-    <color name="textColor">#20BEB2</color>
-    <color name="roboto_calendar_circle_1">#EB5757</color>
+    <color name="textColor">#161d20</color>
+    <color name="roboto_calendar_circle_1">#55c6da</color>
     <color name="roboto_calendar_circle_2">#55c6da</color>
     <color name="roboto_calendar_month_arrow">#55c6da</color>
 </resources>

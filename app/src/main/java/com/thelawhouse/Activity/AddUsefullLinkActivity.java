@@ -1,9 +1,9 @@
 package com.thelawhouse.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -91,7 +91,9 @@ public class AddUsefullLinkActivity extends AppCompatActivity {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            onBackPressed();
+                            Intent intent = new Intent();
+                            setResult(103, intent);
+                            finish();
                         } else {
                             Utils.showDialog(mContext, response.body().message + "");
                         }
@@ -166,7 +168,9 @@ public class AddUsefullLinkActivity extends AppCompatActivity {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            onBackPressed();
+                            Intent intent = new Intent();
+                            setResult(101, intent);
+                            finish();
                         } else {
                             Utils.showDialog(mContext, response.body().message + "");
                         }
