@@ -39,9 +39,11 @@ public class VerifyOtpActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(mContext, R.layout.activity_verify_otp);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            type = bundle.getString("register");
-            if (type.equalsIgnoreCase("loginAdmin")) {
-                resendOtpAdmin();
+            if (bundle.getString("register") != null) {
+                type = bundle.getString("register");
+                if (type.equalsIgnoreCase("loginAdmin")) {
+                    resendOtpAdmin();
+                }
             }
         }
         onClickListener();
@@ -122,7 +124,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
     private Map<String, String> paramSubmitOTP() {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
-        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        params.put("email", PreferenceHelper.getString(Constants.EMAIL, ""));
         params.put("otp", mBinding.edtOTP.getText().toString());
         return params;
     }
@@ -192,7 +194,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
     private Map<String, String> paramSubmitOTPAdmin() {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
-        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        params.put("email", PreferenceHelper.getString(Constants.EMAIL, ""));
         params.put("otp", mBinding.edtOTP.getText().toString());
         return params;
     }
@@ -229,7 +231,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
     private Map<String, String> paramResendOTP() {
         Map<String, String> params = new HashMap<>();
         params.put("user_id", PreferenceHelper.getString(Constants.USER_ID, ""));
-        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        params.put("email", PreferenceHelper.getString(Constants.EMAIL, ""));
         return params;
     }
 
@@ -264,7 +266,7 @@ public class VerifyOtpActivity extends AppCompatActivity {
 
     private Map<String, String> paramResendOTPAdmin() {
         Map<String, String> params = new HashMap<>();
-        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        params.put("email", PreferenceHelper.getString(Constants.EMAIL, ""));
         return params;
     }
 

@@ -10,8 +10,8 @@ public class RegisterModel {
     public String message;
     @SerializedName("otp")
     public String otp;
-    @SerializedName("mobile_number")
-    public String mobile_number;
+    @SerializedName("email")
+    public String email;
     @SerializedName("user_id")
     public String user_id;
 }

@@ -73,7 +73,7 @@
                         android:layout_height="36dp"
                         android:adjustViewBounds="true"
                         android:padding="7dp"
-                        android:src="@drawable/ic_mobile"
+                        android:src="@drawable/ic_email_"
                         android:tint="@color/white" />
                 </LinearLayout>
 
@@ -86,9 +86,8 @@
                     android:layout_marginEnd="7dp"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/font_regular"
-                    android:hint="@string/enter_your_mobile_number"
-                    android:inputType="number"
-                    android:maxLength="10"
+                    android:hint="@string/enter_your_email_address"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size" />
             </LinearLayout>

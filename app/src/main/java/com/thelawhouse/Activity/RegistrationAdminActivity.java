@@ -46,11 +46,9 @@ public class RegistrationAdminActivity extends AppCompatActivity {
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if (mBinding.edtName.getText().toString().equalsIgnoreCase("")) {
                     showToast(mContext, "Please Enter your Name");
-                } else if (mBinding.edtMobile.getText().toString().equalsIgnoreCase("")) {
-                    showToast(mContext, "Please Enter Mobile Number");
-                } else if (mBinding.edtMobile.getText().toString().length() != 10) {
-                    showToast(mContext, "Please Put 10 digit Mobile Number");
-                } else if (mBinding.edtPassword.getText().toString().equalsIgnoreCase("")) {
+                } else if (!mBinding.edtEmail.getText().toString().matches(emailPattern)) {
+                    showToast(mContext, "Please Enter valid Email Address");
+                }  else if (mBinding.edtPassword.getText().toString().equalsIgnoreCase("")) {
                     showToast(mContext, "Please Enter your Password");
                 } else {
                     registerUser();
@@ -80,7 +78,7 @@ public class RegistrationAdminActivity extends AppCompatActivity {
                         if (response.body().message.equalsIgnoreCase("success")) {
                             PreferenceHelper.putString(Constants.USER_ID, response.body().user_id);
                             PreferenceHelper.putString(Constants.OTP, response.body().otp);
-                            PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().mobile_number);
+                            PreferenceHelper.putString(Constants.EMAIL, response.body().email);
                             Intent intent = new Intent(mContext, VerifyOtpActivity.class);
                             intent.putExtra("register", "register");
                             startActivity(intent);

@@ -109,6 +109,18 @@ public class FragDashboard extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.contain_layout, fragment).addToBackStack(null).commit();
             }
         });
+        mBinding.ivShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getActivity().getPackageName();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Check this App The Law House at: https://play.google.com/store/apps/details?id=" + appPackageName);
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+        });
     }
 
     private void logoutDialog() {

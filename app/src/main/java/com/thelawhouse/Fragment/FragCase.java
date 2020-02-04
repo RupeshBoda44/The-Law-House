@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -43,6 +42,7 @@ public class FragCase extends Fragment {
         adapter = new CasePagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(FragCaseCalenderList.newInstance(), "Cases Calender");
         adapter.addFragment(FragAddNewCase.newInstance(), "Add New Case");
+        adapter.addFragment(FragViewAllCase.newInstance(), "All Cases");
         adapter.addFragment(FragCompletedCases.newInstance(), "Dispose Cases");
         adapter.addFragment(FragUnupdatedCases.newInstance(), "Unupdated Cases");
         int limit = (adapter.getCount() > 1 ? adapter.getCount() - 1 : 1);

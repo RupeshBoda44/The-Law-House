@@ -49,10 +49,11 @@ public class ForgotPWDActivity extends AppCompatActivity {
         mBinding.tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if (mBinding.edtMobile.getText().toString().equalsIgnoreCase("")) {
-                    showToast(mContext, "Please Enter Phone Number");
-                } else if (mBinding.edtMobile.getText().toString().length() < 10) {
-                    showToast(mContext, "Please Enter Valid Phone Number");
+                    showToast(mContext, "Please Enter Email Address");
+                } else if (!mBinding.edtMobile.getText().toString().matches(emailPattern)) {
+                    showToast(mContext, "Please Enter Valid Email Address");
                 } else {
                     forgotPassword();
                 }
@@ -73,7 +74,7 @@ public class ForgotPWDActivity extends AppCompatActivity {
                         if (response.body().message.equalsIgnoreCase("success")) {
                             PreferenceHelper.putString(Constants.OTP, response.body().otp);
                             PreferenceHelper.putString(Constants.USER_ID, response.body().user_id);
-                            PreferenceHelper.putString(Constants.MOBILE_NUMBER, response.body().mobile_number);
+                            PreferenceHelper.putString(Constants.EMAIL, response.body().email);
                             Intent intent = new Intent(mContext, VerifyOtpActivity.class);
                             intent.putExtra("class", "ForgotPwd");
                             startActivity(intent);
@@ -95,14 +96,14 @@ public class ForgotPWDActivity extends AppCompatActivity {
 
     private Map<String, String> paramResendOTP() {
         Map<String, String> params = new HashMap<>();
-        params.put("mobile_number", mBinding.edtMobile.getText().toString());
+        params.put("email", mBinding.edtMobile.getText().toString());
         return params;
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(mContext, LoginActivity.class);
-        intent.putExtra("register","forgot");
+        intent.putExtra("register", "forgot");
         startActivity(intent);
         finish();
     }

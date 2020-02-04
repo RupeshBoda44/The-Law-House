@@ -31,13 +31,13 @@ import com.thelawhouse.ClickListener.RecyclerViewClickListener2;
 import com.thelawhouse.Model.CaseListModel;
 import com.thelawhouse.R;
 import com.thelawhouse.Utils.ProgressHUD;
-import com.thelawhouse.Utils.Utils;
 import com.thelawhouse.Utils.WebApiClient;
 import com.thelawhouse.databinding.FragViewAllCaseBinding;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,20 +45,43 @@ import retrofit2.Response;
 
 import static com.thelawhouse.Utils.Utils.isInternetAvailable;
 
-public class FragViewAllCase extends Fragment implements View.OnClickListener {
+public class FragViewAllCase extends Fragment  {
     private FragViewAllCaseBinding mBinding;
     private int page = 0;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private AllCaseAdapter mAdapter;
     MainActivity mainActivity;
+    boolean isVisible = false;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+
+            if (getFragmentManager() != null) {
+
+                getFragmentManager()
+                        .beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .commit();
+                isVisible = true;
+            }
+        }
+    }
+
+    public static FragViewAllCase newInstance() {
+        return new FragViewAllCase();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.frag_view_all_case, container, false);
         mainActivity = (MainActivity) getActivity();
         mainActivity.ClickcableTrue();
-        setData();
+        if (isVisible)
+            setData();
         return mBinding.getRoot();
     }
 
@@ -171,7 +194,7 @@ public class FragViewAllCase extends Fragment implements View.OnClickListener {
                             mBinding.tvDataNotFound.setVisibility(View.GONE);
                             CaseListModel caseListModel = response.body();
                             resultAction(caseListModel);
-                        }else {
+                        } else {
                             mBinding.rvAllCase.setVisibility(View.GONE);
                             mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
                         }
@@ -183,7 +206,7 @@ public class FragViewAllCase extends Fragment implements View.OnClickListener {
                     mProgressHUD.dismissProgressDialog(mProgressHUD);
                     mBinding.rvAllCase.setVisibility(View.GONE);
                     mBinding.tvDataNotFound.setVisibility(View.VISIBLE);
-                    Log.e("error", t.getMessage());
+                    Log.e("error", Objects.requireNonNull(t.getMessage()));
                 }
             });
         }
@@ -228,14 +251,5 @@ public class FragViewAllCase extends Fragment implements View.OnClickListener {
 
     public void onBackPressed() {
         mainActivity.selectFirstItemAsDefault();
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                break;
-        }
     }
 }

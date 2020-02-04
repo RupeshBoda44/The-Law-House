@@ -59,6 +59,11 @@ public class GuestFragment extends Fragment {
             mBinding.llOtp.setVisibility(View.VISIBLE);
             mBinding.tvSendOtp.setVisibility(View.GONE);
             mBinding.tvLogin.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.llMobile.setVisibility(View.VISIBLE);
+            mBinding.llOtp.setVisibility(View.GONE);
+            mBinding.tvSendOtp.setVisibility(View.VISIBLE);
+            mBinding.tvLogin.setVisibility(View.GONE);
         }
         clickListener();
         return mBinding.getRoot();
@@ -68,10 +73,11 @@ public class GuestFragment extends Fragment {
         mBinding.tvSendOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if (mBinding.edtMobile.getText().toString().equalsIgnoreCase("")) {
-                    showToast(getActivity(), "Please Enter Phone Number");
-                } else if (mBinding.edtMobile.getText().toString().length() < 10) {
-                    showToast(getActivity(), "Please Enter Valid Phone Number");
+                    showToast(getActivity(), "Please Enter Email Address");
+                } else if (!mBinding.edtMobile.getText().toString().matches(emailPattern)) {
+                    showToast(getActivity(), "Please Enter Valid Email Address");
                 } else {
                     sendOtp();
                 }
@@ -108,7 +114,7 @@ public class GuestFragment extends Fragment {
                         Log.e("response", response.body() + "");
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
-                            PreferenceHelper.putString(Constants.MOBILE_NUMBER, "+91" + mBinding.edtMobile.getText().toString());
+                            PreferenceHelper.putString(Constants.EMAIL, mBinding.edtMobile.getText().toString());
                             mBinding.llMobile.setVisibility(View.GONE);
                             mBinding.llOtp.setVisibility(View.VISIBLE);
                             mBinding.tvSendOtp.setVisibility(View.GONE);
@@ -135,7 +141,7 @@ public class GuestFragment extends Fragment {
 
     private Map<String, String> paramSendOtp() {
         Map<String, String> params = new HashMap<>();
-        params.put("mobile_number", "+91" + mBinding.edtMobile.getText().toString());
+        params.put("email", mBinding.edtMobile.getText().toString());
         return params;
     }
 
@@ -152,7 +158,7 @@ public class GuestFragment extends Fragment {
                         assert response.body() != null;
                         if (response.body().message.equalsIgnoreCase("success")) {
                             PreferenceHelper.putBoolean(Constants.IS_LOGIN, true);
-                            PreferenceHelper.putString(Constants.MOBILE_NUMBER, "+91" + mBinding.edtMobile.getText().toString());
+                            PreferenceHelper.putString(Constants.EMAIL, mBinding.edtMobile.getText().toString());
                             PreferenceHelper.putString(Constants.LOGINTYPE, "guest");
                             Intent intent = new Intent(getActivity(), GMainActivity.class);
                             startActivity(intent);
@@ -178,7 +184,7 @@ public class GuestFragment extends Fragment {
 
     private Map<String, String> paramSubmitOtp() {
         Map<String, String> params = new HashMap<>();
-        params.put("mobile_number", PreferenceHelper.getString(Constants.MOBILE_NUMBER, ""));
+        params.put("email", PreferenceHelper.getString(Constants.EMAIL, ""));
         params.put("otp", mBinding.edtOtp.getText().toString());
         return params;
     }
@@ -186,7 +192,6 @@ public class GuestFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {

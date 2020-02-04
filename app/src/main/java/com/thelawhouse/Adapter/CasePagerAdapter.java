@@ -9,6 +9,7 @@ import com.thelawhouse.Fragment.FragAddNewCase;
 import com.thelawhouse.Fragment.FragCaseCalenderList;
 import com.thelawhouse.Fragment.FragCompletedCases;
 import com.thelawhouse.Fragment.FragUnupdatedCases;
+import com.thelawhouse.Fragment.FragViewAllCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,10 @@ public class CasePagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new FragAddNewCase();
             case 2:
-                return new FragCompletedCases();
+                return new FragViewAllCase();
             case 3:
+                return new FragCompletedCases();
+            case 4:
                 return new FragUnupdatedCases();
         }
         return null;
@@ -43,7 +46,7 @@ public class CasePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     @Override

@@ -1,2 +1,2 @@
-include ':app', ':alerter', ':countrycodepicker', ':calendarview', ':library'
+include ':app', ':alerter', ':countrycodepicker'/*, ':calendarview'*/, ':library'
 rootProject.name = 'The Law House'

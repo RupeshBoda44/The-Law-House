@@ -133,7 +133,7 @@
                         android:layout_marginEnd="7dp"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/font_regular"
-                        android:hint="@string/enter_your_mobile_number"
+                        android:hint="Enter your mobile number (Optional)"
                         android:inputType="number"
                         android:maxLength="10"
                         android:textColor="@color/black"
@@ -173,7 +173,7 @@
                         android:layout_marginEnd="7dp"
                         android:background="@android:color/transparent"
                         android:fontFamily="@font/font_regular"
-                        android:hint="Enter Email (Optional)"
+                        android:hint="@string/enter_your_email_address"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size" />

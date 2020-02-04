@@ -81,10 +81,11 @@ public class EmployeeFragment extends Fragment {
     }
 
     private void login() {
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         if (mBinding.edtMobile.getText().toString().equalsIgnoreCase("")) {
-            showToast(getActivity(), "Please Enter Phone Number");
-        } else if (mBinding.edtMobile.getText().toString().length() < 10) {
-            showToast(getActivity(), "Please Enter Valid Phone Number");
+            showToast(getActivity(), "Please Enter Email Address");
+        } else if (!mBinding.edtMobile.getText().toString().matches(emailPattern)) {
+            showToast(getActivity(), "Please Enter Valid Email Address");
         } else if (mBinding.edtPassword.getText().toString().equalsIgnoreCase("")) {
             showToast(getActivity(), "Please Enter your Password");
         } else {
@@ -160,7 +161,7 @@ public class EmployeeFragment extends Fragment {
 
     private Map<String, String> paramLogin() {
         Map<String, String> params = new HashMap<>();
-        params.put("mobile_number", mBinding.edtMobile.getText().toString());
+        params.put("email", mBinding.edtMobile.getText().toString());
         params.put("password", mBinding.edtPassword.getText().toString());
         return params;
     }
